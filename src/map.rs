@@ -62,7 +62,7 @@ pub fn make_map(x: u64, y: u64) -> Map {
 
 /// Function that takes in Map type and prints the base map of it
 #[allow(dead_code)]
-pub fn print_map(map: Map) {
+pub fn print_map(map: &Map) {
     // Iterate through map and print wall with red and empty with green
     for x in map.iter() {
         for y in x.iter() {

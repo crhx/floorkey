@@ -51,7 +51,7 @@ impl Object {
 
   /// moving up (x - 1) in the map
   pub fn move_up(&mut self) {
-    if self.x - 1 < 0 {
+    if self.x == 0 {
       println!("Out of bound!");
     }
     else{
@@ -71,7 +71,7 @@ impl Object {
 
   /// moving left (y - 1) in the map
   pub fn move_left(&mut self) {
-    if self.y - 1 < 0 {
+    if self.y == 0 {
       println!("Out of bound!");
     }
     else{

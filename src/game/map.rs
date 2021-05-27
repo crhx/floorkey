@@ -12,15 +12,15 @@ use colored::*;
 use std::fs;
 
 // Map is made up of Tile x Tile
-type Map = Vec<Vec<Tile>>;
+pub type Map = Vec<Vec<Tile>>;
 
 /// Map is created with Tile by Tile
 /// Each Tile has character to display, blocked, visited to display partial map
 #[derive(Clone, Copy, Debug)]
 pub struct Tile {
-    print: char,
-    blocked: bool,
-    visited: bool,
+    pub print: char,
+    pub blocked: bool,
+    pub visited: bool,
 }
 
 /// Constructor for Tile struct
@@ -109,4 +109,9 @@ pub fn read_in_map(name: &str) -> Map {
     }
 
     map
+}
+
+#[allow(dead_code)]
+pub fn get_row_col(map: &Map) -> (u64, u64) {
+    (map.len() as u64, map[0].len() as u64)
 }

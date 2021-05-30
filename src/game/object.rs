@@ -5,10 +5,11 @@
 
 pub type Objects = Vec<Object>;
 pub type Player = Object;
+pub type Item = Object;
 
 /// Object struct that carries x,y coordinates
 /// Has its own print character and specs that could be interacted
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub struct Object {
     pub x: u32,
     pub y: u32,
@@ -16,39 +17,32 @@ pub struct Object {
     pub attri: u32,
     pub mat: u32,
     pub status: u32,
+		pub quantity: u32,
+		pub descr: String,
 }
 
 /// Constructor and position mover
 impl Object {
-    /// Set only position
-    pub fn set_pos(new_x: u32, new_y: u32, logo: char) -> Self {
-        Object {
-            x: new_x,
-            y: new_y,
-            print: logo,
-            attri: 0,
-            mat: 0,
-            status: 0,
-        }
-    }
 
     /// Set all the necessary components of an object
-    pub fn set_full(
-        new_x: u32,
-        new_y: u32,
-        logo: char,
-        new_att: u32,
-        new_mat: u32,
-        new_stat: u32,
-    ) -> Self {
+    pub fn set_full(x: u32, 
+					y: u32,
+					print: char,
+					attri: u32, 
+					mat: u32, 
+					status: u32, 
+					quantity: u32,
+					descr: String) -> Self {
         Object {
-            x: new_x,
-            y: new_y,
-            print: logo,
-            attri: new_att,
-            mat: new_mat,
-            status: new_stat,
-        }
+            x,
+            y,
+            print,
+            attri,
+            mat,
+            status,
+			quantity,
+			descr,
+        	}
     }
 
     /// Printing object's position

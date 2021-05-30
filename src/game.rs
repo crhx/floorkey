@@ -15,7 +15,14 @@ impl Game {
     pub fn create_map_player(map_name: &str) -> Self {
         Game {
             map: map::read_in_map(map_name),
-            player: object::Object::set_pos(2_u32, 2_u32, '@'),
+            player: object::Object::set_full(2_u32, 
+					2_u32,
+					'@',
+					1_u32, 
+					0_u32, 
+					0_u32, 
+					1_u32,
+					String::from("player")),
         }
     }
 

@@ -82,13 +82,13 @@ impl Game {
             self.player.move_up();
         } else if dir == 's' {
             // move player down
-            self.player.move_down(col);
+            self.player.move_down(row);
         } else if dir == 'a' {
             // move player left
             self.player.move_left();
         } else if dir == 'd' {
             // move player right
-            self.player.move_right(row);
+            self.player.move_right(col);
         }
     }
 }

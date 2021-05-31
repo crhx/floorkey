@@ -174,7 +174,7 @@ pub fn read_in_map(name: &str) -> Map {
            map[i][j].to_wall();
            map[i][j].print = c;
            map[i][j].color = "blue".to_string();
-           map[i][j].print_color = c.to_string().color("blue");
+           map[i][j].print_colored = c.to_string().color("blue");
        } else if c == '\n' {
            i += 1;
            j = 0;

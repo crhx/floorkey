@@ -7,6 +7,7 @@
 extern crate colored;
 
 use colored::*;
+use crate::game::object::Player;
 
 // File reading
 use std::fs;
@@ -38,19 +39,19 @@ impl Tile {
         }
     }
 
-/*
-    // dead_code
-    /// Creating wall Tile
-    pub fn wall() -> Self {
-        Tile {
-            print: 'W',
-            blocked: true,
-            visited: false,
-            color: "red".to_string(),
-            print_colored: 'W'.to_string().color("red"),
+    /*
+        // dead_code
+        /// Creating wall Tile
+        pub fn wall() -> Self {
+            Tile {
+                print: 'W',
+                blocked: true,
+                visited: false,
+                color: "red".to_string(),
+                print_colored: 'W'.to_string().color("red"),
+            }
         }
-    }
-*/
+    */
 
     pub fn to_wall(&mut self) {
         self.print = 'W';
@@ -60,13 +61,13 @@ impl Tile {
         self.print_colored = 'W'.to_string().color("red");
     }
 
-/*
-    // dead_code
-    /// Printing self
-    pub fn print(&self) {
-        print!("{}", self.print);
-    }
-*/
+    /*
+        // dead_code
+        /// Printing self
+        pub fn print(&self) {
+            print!("{}", self.print);
+        }
+    */
 }
 
 /*
@@ -103,9 +104,9 @@ pub fn print_map(map: &Map) {
 
 /// Build a terminal printable map from map vector and overlay objects
 /// from object vector.
-//pub fn build_map(map: Vec<Vec<Tile>>, object: Vec<Object>) -> ColoredString {
+pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player) -> Vec<String> {
 // just build from map vector until object vector is finished
-pub fn build_map(map: Vec<Vec<Tile>>) -> String {
+//pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
     struct ColoredCell {
         print_colored: ColoredString,
@@ -113,7 +114,9 @@ pub fn build_map(map: Vec<Vec<Tile>>) -> String {
 
     impl ColoredCell {
         fn new() -> Self {
-            ColoredCell { print_colored: " ".to_string().color("white") }
+            ColoredCell {
+                print_colored: " ".to_string().color("white"),
+            }
         }
     }
 
@@ -124,27 +127,29 @@ pub fn build_map(map: Vec<Vec<Tile>>) -> String {
         let mut cells: Vec<ColoredCell> = Vec::new();
         for inner in outer {
             let mut cell = ColoredCell::new();
-            cell.print_colored = inner.print_colored;
+            cell.print_colored = inner.print_colored.clone();
             cells.push(cell);
         }
         colormap.push(cells);
     }
 
     // overlay objects
-    // todo!();
+    // todo: add color to objects
+    // todo: accept objects vector
+    colormap[player.x as usize][player.y as usize].print_colored = player.print.to_string().color("purple");
 
     // deconstruct colormap and build result
-    let mut result: String = "".to_string();
+    let mut result: Vec<String> = Vec::new();
     for outer in colormap {
+        let mut line: String = "".to_string();
         for inner in outer {
-            result = format!("{}{}", inner.print_colored, result);
+            line = format!("{}{}", line, inner.print_colored);
         }
-        result = format!("{}\r\n", result);
+        result.push(line);
     }
 
     result
 }
-
 
 /// Function that takes in file name and create map from read in text file
 /// Returns the created map
@@ -152,35 +157,42 @@ pub fn read_in_map(name: &str) -> Map {
     // Read in the file in string form
     let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
 
-    // Count how many newline char and calculate rows and columns
-    let row = maptext.matches('\n').count();
-    let col = (maptext.len() - row) / row;
+    /*
+        // Count how many newline char and calculate rows and columns
+        let row = maptext.matches('\n').count();
+        let col = (maptext.len() - row) / row;
+    */
 
     // Create all empty tile map
-    let mut map = vec![vec![Tile::empty(); col as usize]; row as usize];
+    let mut map = vec![vec![Tile::empty(); 0 as usize]; 0 as usize];
 
-    let mut i = 0;
-    let mut j = 0;
+    /*
+        let mut i = 0;
+        let mut j = 0;
+    */
 
     // Iterate through string and modify the all empty map
-    for c in maptext.chars() {
-       // wall
-       if "1-|+┌┘└┐┴┬├┤─│┼".contains(c) {
-            map[i][j].to_wall();
-            map[i][j].print = c;
-            j += 1;
-       // water
-       } else if "~%".contains(c) {
-           map[i][j].to_wall();
-           map[i][j].print = c;
-           map[i][j].color = "blue".to_string();
-           map[i][j].print_colored = c.to_string().color("blue");
-       } else if c == '\n' {
-           i += 1;
-           j = 0;
-       } else {
-           j += 1;
-       }
+    for mapline in maptext.lines() {
+        let mut line: Vec<Tile> = Vec::new();
+        for c in mapline.chars() {
+            let mut tile = Tile::empty();
+
+            if "1-|+┌┘└┐┴┬├┤─│┼".contains(c) {
+                tile.to_wall();
+                tile.print = c;
+                tile.print_colored = c.to_string().color("red");
+            }
+
+            if "~%".contains(c) {
+                tile.to_wall();
+                tile.print = c;
+                tile.color = "blue".to_string();
+                tile.print_colored = c.to_string().color("blue");
+            }
+
+            line.push(tile);
+        }
+        map.push(line);
     }
 
     map

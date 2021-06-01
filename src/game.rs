@@ -76,18 +76,16 @@ impl Game {
 
     pub fn player_movement(&mut self, dir: char) {
         let (row, col) = map::get_row_col(&self.map);
-
-        let mut temp_player_x = self.player.x;
-        let mut temp_player_y = self.player.y;
         let mut player_collision = true;
+        let mut temp = self.player.clone();
 
         if dir == 'w' {
             // move player up
-            temp_player_x -= 1;
-            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            temp.move_up();
+            player_collision = map::isCollision(&self.map, temp.x, temp.y);
             if !player_collision
             {
-                self.player.move_up();
+                self.player = temp;
             }
             else{  
                 println!("Player collided with an object");
@@ -95,11 +93,11 @@ impl Game {
             
         } else if dir == 's' {
             // move player down
-            temp_player_x += 1;
-            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            temp.move_down(row);
+            player_collision = map::isCollision(&self.map, temp.x, temp.y);
             if !player_collision
             {
-                self.player.move_down(row);
+                self.player = temp;
             }
             else{  
                 println!("Player collided with an object");
@@ -107,11 +105,11 @@ impl Game {
             
         } else if dir == 'a' {
             // move player left
-            temp_player_y -= 1;
-            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            temp.move_left();
+            player_collision = map::isCollision(&self.map, temp.x, temp.y);
             if !player_collision
             {
-                self.player.move_left();
+                self.player = temp;
             }
             else{  
                 println!("Player collided with an object");
@@ -119,11 +117,11 @@ impl Game {
             
         } else if dir == 'd' {
             // move player right
-            temp_player_y += 1;
-            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            temp.move_right(col);
+            player_collision = map::isCollision(&self.map, temp.x, temp.y);
             if !player_collision
             {
-                self.player.move_right(col);
+                self.player = temp;
             }
             else{  
                 println!("Player collided with an object");

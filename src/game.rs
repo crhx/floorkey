@@ -77,18 +77,58 @@ impl Game {
     pub fn player_movement(&mut self, dir: char) {
         let (row, col) = map::get_row_col(&self.map);
 
+        let mut temp_player_x = self.player.x;
+        let mut temp_player_y = self.player.y;
+        let mut player_collision = true;
+
         if dir == 'w' {
             // move player up
-            self.player.move_up();
+            temp_player_x -= 1;
+            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            if !player_collision
+            {
+                self.player.move_up();
+            }
+            else{  
+                println!("Player collided with an object");
+            }
+            
         } else if dir == 's' {
             // move player down
-            self.player.move_down(row);
+            temp_player_x += 1;
+            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            if !player_collision
+            {
+                self.player.move_down(col);
+            }
+            else{  
+                println!("Player collided with an object");
+            }
+            
         } else if dir == 'a' {
             // move player left
-            self.player.move_left();
+            temp_player_y -= 1;
+            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            if !player_collision
+            {
+                self.player.move_left();
+            }
+            else{  
+                println!("Player collided with an object");
+            }
+            
         } else if dir == 'd' {
             // move player right
-            self.player.move_right(col);
+            temp_player_y += 1;
+            player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
+            if !player_collision
+            {
+                self.player.move_right(row);
+            }
+            else{  
+                println!("Player collided with an object");
+            }
+            
         }
     }
 }

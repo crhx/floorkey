@@ -99,7 +99,7 @@ impl Game {
             player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
             if !player_collision
             {
-                self.player.move_down(col);
+                self.player.move_down(row);
             }
             else{  
                 println!("Player collided with an object");
@@ -123,7 +123,7 @@ impl Game {
             player_collision = map::isCollision(&self.map, temp_player_x, temp_player_y);
             if !player_collision
             {
-                self.player.move_right(row);
+                self.player.move_right(col);
             }
             else{  
                 println!("Player collided with an object");

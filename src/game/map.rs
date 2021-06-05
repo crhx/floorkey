@@ -210,7 +210,7 @@ pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }
 
-pub fn isCollision(map: &Map, cur_pos_x : u32, cur_pos_y: u32) -> bool{
+pub fn is_collision(map: &Map, cur_pos_x : u32, cur_pos_y: u32) -> bool{
     let (row, col) = get_row_col(map);
 
         //if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32

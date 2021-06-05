@@ -10,6 +10,8 @@ use crate::game::object::Object;
 pub struct Game {
     map: map::Map,
     player: object::Player,
+		objects: object::Objects,
+		inventory: object::Object,
 }
 
 impl Game {
@@ -25,8 +27,14 @@ impl Game {
                 0_u32,
                 1_u32,
                 String::from("player"),
-            ),
-        }
+								false,
+								"purple".to_string(),
+								"purple".to_string().color("purple"),
+							),
+						objects: Vec::new(),
+						inventory: Object::empty(),
+
+					        }
     }
 
     /*
@@ -36,7 +44,7 @@ impl Game {
         }
     */
 
-    pub fn print(&self) {
+    pub fn print(&mut self) {
         /*
                 let (row, col) = map::get_row_col(&self.map);
 
@@ -53,7 +61,7 @@ impl Game {
         print!("\x1B[2J\x1B[1;1H");
  
         // todo: objects vector to pass to build_map 
-        for line in map::build_map(&self.map, &self.player) {
+        for line in map::build_map(&self.map, &self.player, &mut self.objects) {
             print!("{}\r\n", line);
         }
         /*

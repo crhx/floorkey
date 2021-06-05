@@ -8,6 +8,7 @@ extern crate colored;
 
 use colored::*;
 use crate::game::object::Player;
+use crate::game::object::Object;
 
 // File reading
 use std::fs;
@@ -104,7 +105,7 @@ pub fn print_map(map: &Map) {
 
 /// Build a terminal printable map from map vector and overlay objects
 /// from object vector.
-pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player) -> Vec<String> {
+pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player, objects: &mut Vec<Object>) -> Vec<String> {
 // just build from map vector until object vector is finished
 //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
@@ -123,6 +124,7 @@ pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player) -> Vec<String> {
     let mut colormap = vec![vec![ColoredCell::new(); 0]; 0];
 
     // build colormap from map
+		
     for outer in map {
         let mut cells: Vec<ColoredCell> = Vec::new();
         for inner in outer {
@@ -134,6 +136,12 @@ pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player) -> Vec<String> {
     }
 
     // overlay objects
+		let mut potion: Object = Object::empty();
+		potion.to_potion();
+		objects.push(potion);
+		for amount_of in objects {
+    	colormap[amount_of.x as usize][amount_of.y as usize].print_colored = amount_of.print_colored.clone();
+		}
     // todo: add color to objects
     // todo: accept objects vector
     colormap[player.x as usize][player.y as usize].print_colored = player.print.to_string().color("purple");

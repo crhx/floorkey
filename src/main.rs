@@ -7,7 +7,6 @@ use termion::raw::IntoRawMode;
 fn main() {
     let mut game = game::Game::create_map_player("map2.txt");
     game.print();
-
     // Using termion raw mode
     let _stdout = stdout().into_raw_mode().unwrap();
 

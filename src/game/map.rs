@@ -212,13 +212,20 @@ pub fn get_row_col(map: &Map) -> (u64, u64) {
 
 pub fn isCollision(map: &Map, cur_pos_x : u32, cur_pos_y: u32) -> bool{
     let (row, col) = get_row_col(map);
-        if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32
+
+        //if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32
+        if cur_pos_x >= row as u32 || cur_pos_y >= col as u32
         {
             return true;
         }
+/*
         if map[cur_pos_x as usize][cur_pos_y as usize].print != '.'
         {
             return true;
         }
         false
+*/
+        // use the blocked flag instead of symbol... 
+        // invisibile walls anyone?
+        map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }

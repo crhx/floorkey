@@ -84,13 +84,14 @@ impl Game {
 
     pub fn player_movement(&mut self, dir: char) {
         let (row, col) = map::get_row_col(&self.map);
-        let mut player_collision = true;
+        // moved this to local scope to remove warning
+        // let mut player_collision = true;
         let mut temp = self.player.clone();
 
         if dir == 'w' {
             // move player up
             temp.move_up();
-            player_collision = map::isCollision(&self.map, temp.x, temp.y);
+            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
                 self.player = temp;
@@ -102,7 +103,7 @@ impl Game {
         } else if dir == 's' {
             // move player down
             temp.move_down(row);
-            player_collision = map::isCollision(&self.map, temp.x, temp.y);
+            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
                 self.player = temp;
@@ -114,7 +115,7 @@ impl Game {
         } else if dir == 'a' {
             // move player left
             temp.move_left();
-            player_collision = map::isCollision(&self.map, temp.x, temp.y);
+            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
                 self.player = temp;
@@ -126,7 +127,7 @@ impl Game {
         } else if dir == 'd' {
             // move player right
             temp.move_right(col);
-            player_collision = map::isCollision(&self.map, temp.x, temp.y);
+            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
                 self.player = temp;

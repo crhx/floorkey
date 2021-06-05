@@ -1,4 +1,5 @@
-/target/
+/target
+/target/*
 
 *.swp
 .DS_Store

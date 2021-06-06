@@ -6,7 +6,7 @@ use termion::raw::IntoRawMode;
 
 fn main() {
     let mut game = game::Game::create_map_player("map2.txt");
-    game.print();
+    game.print("game_loading".to_string());
     // Using termion raw mode
     let _stdout = stdout().into_raw_mode().unwrap();
 
@@ -20,8 +20,8 @@ fn main() {
             println!("Unreadable Input! Please try again.");
         } else {
             game.player_movement(c);
-            
-            game.print();
+            game.item_interaction();
+            game.print("playing".to_string());
 
             if c == 'q' {
                 break;
@@ -29,5 +29,5 @@ fn main() {
         }
     }
 
-    game.print();
+    game.print("finishing".to_string());
 }

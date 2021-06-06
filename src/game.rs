@@ -44,7 +44,7 @@ impl Game {
         }
     */
 
-    pub fn print(&mut self) {
+    pub fn print(&mut self, status : String) {
         /*
                 let (row, col) = map::get_row_col(&self.map);
 
@@ -61,7 +61,7 @@ impl Game {
         print!("\x1B[2J\x1B[1;1H");
  
         // todo: objects vector to pass to build_map 
-        for line in map::build_map(&self.map, &self.player, &mut self.objects) {
+        for line in map::build_map(&self.map, &self.player, &mut self.objects, status) {
             print!("{}\r\n", line);
         }
         /*
@@ -106,10 +106,11 @@ impl Game {
             let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
+
                 self.player = temp;
             }
             else{  
-                println!("Player collided with an object");
+                println!("Player collided with wall");
             }
             
         } else if dir == 'a' {
@@ -118,10 +119,11 @@ impl Game {
             let player_collision = map::is_collision(&self.map, temp.x, temp.y);
             if !player_collision
             {
+
                 self.player = temp;
             }
             else{  
-                println!("Player collided with an object");
+                println!("Player collided with wall");
             }
             
         } else if dir == 'd' {
@@ -133,9 +135,20 @@ impl Game {
                 self.player = temp;
             }
             else{  
-                println!("Player collided with an object");
+                println!("Player collided with wall");
             }
             
+        }
+    }
+
+    pub fn item_interaction(&mut self){
+        let temp_player = self.player.clone();
+        let obj = self.objects.clone();
+        for (i, item) in obj.iter().enumerate(){
+            if temp_player.x == item.x && temp_player.y == item.y {
+                self.inventory = item.clone();
+                self.objects.remove(i);
+            }
         }
     }
 }

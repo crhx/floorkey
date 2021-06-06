@@ -82,8 +82,8 @@ impl Object {
 			self.quantity = 1;
 			self.descr = "Potion".to_string();
 					self.holdable = true;
-					self.color = "red".to_string();
-					self.print_colored = 'ם'.to_string().color("red");
+					self.color = "yellow".to_string();
+					self.print_colored = 'ם'.to_string().color("yellow");
 		}
 
     /// Printing object's position

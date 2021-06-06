@@ -6,12 +6,13 @@
 // Crate for printing color in terminal
 extern crate colored;
 
-use colored::*;
-use crate::game::object::Player;
 use crate::game::object::Object;
+use crate::game::object::Player;
+use colored::*;
+use crate::game::level::*;
 
 // File reading
-use std::fs;
+//use std::fs;
 
 // Map is made up of Tile x Tile
 pub type Map = Vec<Vec<Tile>>;
@@ -105,9 +106,14 @@ pub fn print_map(map: &Map) {
 
 /// Build a terminal printable map from map vector and overlay objects
 /// from object vector.
-pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player, objects: &mut Vec<Object>, game_status : String) -> Vec<String> {
-// just build from map vector until object vector is finished
-//pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
+pub fn build_map(
+    map: &Vec<Vec<Tile>>,
+    player: &Player,
+    objects: &mut Vec<Object>,
+    game_status: String,
+) -> Vec<String> {
+    // just build from map vector until object vector is finished
+    //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
     struct ColoredCell {
         print_colored: ColoredString,
@@ -124,7 +130,7 @@ pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player, objects: &mut Vec<Object
     let mut colormap = vec![vec![ColoredCell::new(); 0]; 0];
 
     // build colormap from map
-		
+
     for outer in map {
         let mut cells: Vec<ColoredCell> = Vec::new();
         for inner in outer {
@@ -137,17 +143,19 @@ pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player, objects: &mut Vec<Object
 
     // overlay objects
     if game_status == "game_loading" {
-		let mut potion: Object = Object::empty();
-		potion.to_potion();
-		objects.push(potion);
+        let mut potion: Object = Object::empty();
+        potion.to_potion();
+        objects.push(potion);
     }
-		for amount_of in objects {
-    	colormap[amount_of.x as usize][amount_of.y as usize].print_colored = amount_of.print_colored.clone();
-		}
-    
+    for amount_of in objects {
+        colormap[amount_of.x as usize][amount_of.y as usize].print_colored =
+            amount_of.print_colored.clone();
+    }
+
     // todo: add color to objects
     // todo: accept objects vector
-    colormap[player.x as usize][player.y as usize].print_colored = player.print.to_string().color("purple");
+    colormap[player.x as usize][player.y as usize].print_colored =
+        player.print.to_string().color("purple");
 
     // deconstruct colormap and build result
     let mut result: Vec<String> = Vec::new();
@@ -164,9 +172,10 @@ pub fn build_map(map: &Vec<Vec<Tile>>, player: &Player, objects: &mut Vec<Object
 
 /// Function that takes in file name and create map from read in text file
 /// Returns the created map
-pub fn read_in_map(name: &str) -> Map {
+//pub fn read_in_map(name: &str) -> Map {
+pub fn read_in_map(level_number: u32) -> Map {
     // Read in the file in string form
-    let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
+//    let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
 
     /*
         // Count how many newline char and calculate rows and columns
@@ -183,12 +192,38 @@ pub fn read_in_map(name: &str) -> Map {
     */
 
     // Iterate through string and modify the all empty map
-    for mapline in maptext.lines() {
-        let mut line: Vec<Tile> = Vec::new();
-        for c in mapline.chars() {
-            let mut tile = Tile::empty();
+    let colormap = &level(level_number).map_colors;
+    let colorkey = &level(level_number).map_color_key;
+    let charmap = &level(level_number).map_chars;
+    let boolmap = &level(level_number).map_bools;
 
-            if "1-|+┌┘└┐┴┬├┤─│┼".contains(c) {
+    for (x, char_line) in charmap.iter().enumerate() {
+        let mut line: Vec<Tile> = Vec::new();
+        for (y, c) in char_line.chars().enumerate() {
+            let mut tile = Tile::empty();
+            tile.print = c;
+            for &(key, the_color) in colorkey.iter() {
+                if key == colormap[x].chars().nth(y).unwrap() {
+                    tile.color = the_color.to_string().clone();
+                    tile.print_colored = tile.print.to_string().color(tile.color.clone());
+                    break;
+                }
+            }
+            match boolmap[x].chars().nth(y).unwrap() {
+                '0' => { tile.blocked = false; tile.visited = false },
+                '1' => { tile.blocked = true; tile.visited = false },
+                '2' => { tile.blocked = false; tile.visited = true },
+                '3' => { tile.blocked = true; tile.visited = true },
+                _ => panic!("Undefined value in boolmap."),
+            }
+            line.push(tile);
+        }
+        map.push(line);
+    }
+    map
+}
+
+/*            if "1-|+┌┘└┐┴┬├┤─│┼".contains(c) {
                 tile.to_wall();
                 tile.print = c;
                 tile.print_colored = c.to_string().color("red");
@@ -200,7 +235,6 @@ pub fn read_in_map(name: &str) -> Map {
                 tile.color = "blue".to_string();
                 tile.print_colored = c.to_string().color("blue");
             }
-
             line.push(tile);
         }
         map.push(line);
@@ -208,27 +242,26 @@ pub fn read_in_map(name: &str) -> Map {
 
     map
 }
-
+*/
 pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }
 
-pub fn is_collision(map: &Map, cur_pos_x : u32, cur_pos_y: u32) -> bool{
+pub fn is_collision(map: &Map, cur_pos_x: u32, cur_pos_y: u32) -> bool {
     let (row, col) = get_row_col(map);
 
-        //if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32
-        if cur_pos_x >= row as u32 || cur_pos_y >= col as u32
-        {
-            return true;
-        }
-/*
-        if map[cur_pos_x as usize][cur_pos_y as usize].print != '.'
-        {
-            return true;
-        }
-        false
-*/
-        // use the blocked flag instead of symbol... 
-        // invisibile walls anyone?
-        map[cur_pos_x as usize][cur_pos_y as usize].blocked
+    //if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32
+    if cur_pos_x >= row as u32 || cur_pos_y >= col as u32 {
+        return true;
+    }
+    /*
+            if map[cur_pos_x as usize][cur_pos_y as usize].print != '.'
+            {
+                return true;
+            }
+            false
+    */
+    // use the blocked flag instead of symbol...
+    // invisibile walls anyone?
+    map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }

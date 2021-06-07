@@ -103,14 +103,6 @@ impl Object {
         self.print_colored = 'ם'.to_string().color("yellow");
     }
 
-    /// Printing object's position
-    /*
-    // dead code
-    pub fn print_pos(&self) {
-        println!("x: {}, y: {}\r", self.x, self.y);
-    }
-    */
-
     /// moving up (x - 1) in the map
     pub fn move_up(&mut self) {
         if self.x == 0 {

@@ -11,9 +11,6 @@ use crate::game::object::Object;
 use crate::game::object::Player;
 use colored::*;
 
-// File reading
-//use std::fs;
-
 // Map is made up of Tile x Tile
 pub type Map = Vec<Vec<Tile>>;
 
@@ -41,20 +38,6 @@ impl Tile {
         }
     }
 
-    /*
-        // dead_code
-        /// Creating wall Tile
-        pub fn wall() -> Self {
-            Tile {
-                print: 'W',
-                blocked: true,
-                visited: false,
-                color: "red".to_string(),
-                print_colored: 'W'.to_string().color("red"),
-            }
-        }
-    */
-
     pub fn to_wall(&mut self) {
         self.print = 'W';
         self.blocked = true;
@@ -62,47 +45,7 @@ impl Tile {
         self.color = "red".to_string();
         self.print_colored = 'W'.to_string().color("red");
     }
-
-    /*
-        // dead_code
-        /// Printing self
-        pub fn print(&self) {
-            print!("{}", self.print);
-        }
-    */
 }
-
-/*
-// dead_code
-/// Takes in Height and Width of the map and creates a map then returns it
-pub fn make_map(x: u64, y: u64) -> Map {
-    let map = vec![vec![Tile::empty(); x as usize]; y as usize];
-
-    // Algorithm to procedurally generate map
-
-    map
-}
-*/
-
-/*
-// dead_code
-/// Function that takes in Map type and prints the base map of it
-pub fn print_map(map: &Map) {
-    // Iterate through map and print wall with red and empty with green
-    for x in map.iter() {
-        for y in x.iter() {
-            let tile = y.print;
-
-            if tile == 'W' {
-                print!("{}", tile.to_string().red());
-            } else {
-                print!("{}", tile.to_string().green());
-            }
-        }
-        println!();
-    }
-}
-*/
 
 /// Build a terminal printable map from map vector and overlay objects
 /// from object vector.
@@ -171,10 +114,12 @@ pub fn build_map(
         result.push(line);
     }
 
+    // Add player Inventory
     result.push(String::from("\n"));
     result.push(String::from("----------- Inventory -----------"));
     result.push(inventory.descr.clone());
 
+    // Add game's messages at the very end
     result.push(String::from("----------- Game Message -----------"));
     result.append(&mut message.clone());
 
@@ -185,22 +130,7 @@ pub fn build_map(
 /// Returns the created map
 //pub fn read_in_map(name: &str) -> Map {
 pub fn read_in_map(level_number: u32) -> Map {
-    // Read in the file in string form
-    //    let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
-
-    /*
-        // Count how many newline char and calculate rows and columns
-        let row = maptext.matches('\n').count();
-        let col = (maptext.len() - row) / row;
-    */
-
-    // Create all empty tile map
     let mut map = vec![vec![Tile::empty(); 0 as usize]; 0 as usize];
-
-    /*
-        let mut i = 0;
-        let mut j = 0;
-    */
 
     // Iterate through string and modify the all empty map
     let colormap = &level(level_number).map_colors;

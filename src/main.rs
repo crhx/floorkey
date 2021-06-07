@@ -2,8 +2,10 @@ mod game;
 
 use std::io::{self, stdout, Read};
 use termion::raw::IntoRawMode;
+use std::time::Instant;
 
 fn main() {
+    let now = Instant::now();
     let mut game = game::Game::create_map_player(1);
     game.print("game_loading".to_string());
     // Using termion raw mode
@@ -29,4 +31,5 @@ fn main() {
     // Read in user input without pressing enter each time
 
     game.print("finishing".to_string());
+    println!("Time {} sec", now.elapsed().as_secs());
 }

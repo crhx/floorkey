@@ -110,6 +110,7 @@ pub fn build_map(
     map: &Vec<Vec<Tile>>,
     player: &Player,
     objects: &mut Vec<Object>,
+    inventory: &mut Object,
     message: &mut Vec<String>,
     game_status: String,
 ) -> Vec<String> {
@@ -169,6 +170,9 @@ pub fn build_map(
     }
 
     result.push(String::from("\n"));
+    result.push(String::from("----------- Inventory -----------"));
+    result.push(inventory.descr.clone());
+
     result.push(String::from("----------- Game Message -----------"));
     result.append(&mut message.clone());
 

@@ -47,7 +47,7 @@ impl Game {
     */
 
     pub fn add_msg(&mut self, msg: String) {
-        while self.message.len() > 6 {
+        while self.message.len() > 4 {
             self.message.remove(0);
         }
 
@@ -72,7 +72,7 @@ impl Game {
         print!("\x1B[2J\x1B[1;1H");
 
         // todo: objects vector to pass to build_map
-        for line in map::build_map(&self.map, &self.player, &mut self.objects, &mut self.message, status) {
+        for line in map::build_map(&self.map, &self.player, &mut self.objects, &mut self.inventory, &mut self.message, status) {
             print!("{}\r\n", line);
         }
         /*
@@ -149,6 +149,9 @@ impl Game {
             if temp_player.x == item.x && temp_player.y == item.y {
                 self.inventory = item.clone();
                 self.objects.remove(i);
+
+                let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
+                self.add_msg(String::from(msg));
             }
         }
     }

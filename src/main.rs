@@ -2,7 +2,7 @@ mod game;
 
 use std::io::{self, stdout, Read};
 use termion::raw::IntoRawMode;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 fn main() {
     let now = Instant::now();

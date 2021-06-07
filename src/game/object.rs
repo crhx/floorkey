@@ -19,28 +19,29 @@ pub struct Object {
     pub attri: u32,
     pub mat: u32,
     pub status: u32,
-		pub quantity: u32,
-		pub descr: String,
-		pub holdable: bool,
+    pub quantity: u32,
+    pub descr: String,
+    pub holdable: bool,
     pub color: String,
     pub print_colored: ColoredString,
 }
 
 /// Constructor and position mover
 impl Object {
-
     /// Set all the necessary components of an object
-    pub fn set_full(x: u32, 
-					y: u32,
-					print: char,
-					attri: u32, 
-					mat: u32, 
-					status: u32, 
-					quantity: u32,
-					descr: String,
-					holdable: bool,
-					color: String,
-					print_colored: ColoredString,) -> Self {
+    pub fn set_full(
+        x: u32,
+        y: u32,
+        print: char,
+        attri: u32,
+        mat: u32,
+        status: u32,
+        quantity: u32,
+        descr: String,
+        holdable: bool,
+        color: String,
+        print_colored: ColoredString,
+    ) -> Self {
         Object {
             x,
             y,
@@ -48,43 +49,43 @@ impl Object {
             attri,
             mat,
             status,
-			quantity,
-			descr,
-					holdable,
-					color,
-					print_colored,
-        	}
+            quantity,
+            descr,
+            holdable,
+            color,
+            print_colored,
+        }
     }
-		/// Creates empty object
-		pub fn empty() -> Self { 
-			Object {
+    /// Creates empty object
+    pub fn empty() -> Self {
+        Object {
             x: 0,
             y: 0,
             print: '0',
             attri: 0,
             mat: 0,
             status: 0,
-			quantity: 0,
-			descr: "".to_string(),
-					holdable: false,
-					color: "green".to_string(),
-					print_colored: '0'.to_string().color("green"),
-        	}
+            quantity: 0,
+            descr: "".to_string(),
+            holdable: false,
+            color: "green".to_string(),
+            print_colored: '0'.to_string().color("green"),
+        }
     }
 
-		pub fn to_potion(&mut self){
-            self.x = 4;
-            self.y = 3;
-            self.print = 'ם';
-            self.attri = 0;
-            self.mat = 0;
-            self.status = 0;
-			self.quantity = 1;
-			self.descr = "Potion".to_string();
-					self.holdable = true;
-					self.color = "yellow".to_string();
-					self.print_colored = 'ם'.to_string().color("yellow");
-		}
+    pub fn to_potion(&mut self) {
+        self.x = 4;
+        self.y = 3;
+        self.print = 'ם';
+        self.attri = 0;
+        self.mat = 0;
+        self.status = 0;
+        self.quantity = 1;
+        self.descr = "Potion".to_string();
+        self.holdable = true;
+        self.color = "yellow".to_string();
+        self.print_colored = 'ם'.to_string().color("yellow");
+    }
 
     /// Printing object's position
     /*

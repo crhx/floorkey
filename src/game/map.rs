@@ -6,10 +6,10 @@
 // Crate for printing color in terminal
 extern crate colored;
 
+use crate::game::level::*;
 use crate::game::object::Object;
 use crate::game::object::Player;
 use colored::*;
-use crate::game::level::*;
 
 // File reading
 //use std::fs;
@@ -110,6 +110,7 @@ pub fn build_map(
     map: &Vec<Vec<Tile>>,
     player: &Player,
     objects: &mut Vec<Object>,
+    message: &mut Vec<String>,
     game_status: String,
 ) -> Vec<String> {
     // just build from map vector until object vector is finished
@@ -167,6 +168,10 @@ pub fn build_map(
         result.push(line);
     }
 
+    result.push(String::from("\n"));
+    result.push(String::from("----------- Game Message -----------"));
+    result.append(&mut message.clone());
+
     result
 }
 
@@ -175,7 +180,7 @@ pub fn build_map(
 //pub fn read_in_map(name: &str) -> Map {
 pub fn read_in_map(level_number: u32) -> Map {
     // Read in the file in string form
-//    let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
+    //    let maptext = fs::read_to_string(name).expect("Something went wrong reading the file");
 
     /*
         // Count how many newline char and calculate rows and columns
@@ -210,10 +215,22 @@ pub fn read_in_map(level_number: u32) -> Map {
                 }
             }
             match boolmap[x].chars().nth(y).unwrap() {
-                '0' => { tile.blocked = false; tile.visited = false },
-                '1' => { tile.blocked = true; tile.visited = false },
-                '2' => { tile.blocked = false; tile.visited = true },
-                '3' => { tile.blocked = true; tile.visited = true },
+                '0' => {
+                    tile.blocked = false;
+                    tile.visited = false
+                }
+                '1' => {
+                    tile.blocked = true;
+                    tile.visited = false
+                }
+                '2' => {
+                    tile.blocked = false;
+                    tile.visited = true
+                }
+                '3' => {
+                    tile.blocked = true;
+                    tile.visited = true
+                }
                 _ => panic!("Undefined value in boolmap."),
             }
             line.push(tile);

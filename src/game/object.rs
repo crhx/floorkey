@@ -25,6 +25,8 @@ pub struct Object {
     pub holdable: bool,
     pub color: String,
     pub print_colored: ColoredString,
+    pub paired_item : String,
+    pub score : u32,
 }
 
 /// Constructor and position mover
@@ -42,6 +44,8 @@ impl Object {
         holdable: bool,
         color: String,
         print_colored: ColoredString,
+        paired_item : String,
+        score : u32,
     ) -> Self {
         Object {
             x,
@@ -55,6 +59,8 @@ impl Object {
             holdable,
             color,
             print_colored,
+            paired_item,
+            score,
         }
     }
     /// Creates empty object
@@ -71,6 +77,8 @@ impl Object {
             holdable: false,
             color: "green".to_string(),
             print_colored: '0'.to_string().color("green"),
+            paired_item : "".to_string(),
+            score : 0,
         }
     }
 
@@ -87,6 +95,8 @@ impl Object {
             holdable: false,
             color: "pink".to_string(),
             print_colored: '#'.to_string().color("cyan"),
+            paired_item : "".to_string(),
+            score : 0,
         }
     }
 
@@ -102,6 +112,8 @@ impl Object {
         self.holdable = true;
         self.color = "yellow".to_string();
         self.print_colored = 'ם'.to_string().color("yellow");
+        self.paired_item = "".to_string();
+        self.score = 10;
     }
 
     /// moving up (x - 1) in the map

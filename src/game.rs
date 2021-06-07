@@ -123,11 +123,11 @@ impl Game {
         for (i, item) in obj.iter().enumerate() {
             // Making sure that we only pick it up when the object is holdable
             if temp_player.x == item.x && temp_player.y == item.y {
-                if item.holdable == true {
+                // If it's an item
+                if item.holdable {
                     // If player is holding an item
-                    if inv.descr != "" {
-                        let pick = "=> You've dropped your ".to_owned() + &inv.clone().descr;
-                        self.add_msg(String::from(pick));
+                    if !inv.descr.is_empty() {
+                        self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
 
                         // Put the object on map into player's inventory and remove it from the map
                         self.inventory = item.clone();
@@ -138,8 +138,7 @@ impl Game {
                         // Drop it onto the map by just adding that Object to the objects
                         self.objects.push(inv.clone());
 
-                        let drop = "=> You just picked up a/an ".to_owned() + &item.descr;
-                        self.add_msg(String::from(drop));
+                        self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
                     }
                     // If player is not holding an item then just pick it up
                     else {
@@ -147,13 +146,13 @@ impl Game {
                         self.objects.remove(i);
 
                         // Print what item we've picked up
-                        let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
-                        self.add_msg(String::from(msg));
+                        self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
                     }
-                } else {
+                }
+                // If it's an interactable object
+                else {
                     // Print what item we've picked up
-                    let msg = "=> You just encountered a/an ".to_owned() + &item.descr;
-                    self.add_msg(String::from(msg));
+                    self.add_msg("=> You just encountered a/an ".to_owned() + &item.descr);
 
                     // If level exit has been met
                     if item.descr == "Exit" {

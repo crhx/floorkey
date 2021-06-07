@@ -71,48 +71,62 @@ impl Game {
         }
     }
 
+    ///
+    /// Function for moving player in all different directions 
+    /// @self : game object
+    /// @dir : which direction player wants to move
+    /// @return : None
+    ///
     pub fn player_movement(&mut self, dir: char) {
         let (row, col) = map::get_row_col(&self.map);
-        // moved this to local scope to remove warning
-        // let mut player_collision = true;
         let mut temp = self.player.clone();
 
-        if dir == 'w' {
-            // move player up
-            temp.move_up();
-            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
-            if !player_collision {
-                self.player = temp;
-            } else {
-                self.add_msg(String::from("=> Player collided with a wall"));
+        match dir { 
+            'w' => {
+                // move player up
+                temp.move_up();
+                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                if !player_collision {
+                    self.player = temp;
+                } else {
+                    self.add_msg(String::from("=> Player collided with a wall"));
+                }
             }
-        } else if dir == 's' {
-            // move player down
-            temp.move_down(row);
-            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
-            if !player_collision {
-                self.player = temp;
-            } else {
-                self.add_msg(String::from("=> Player collided with a wall"));
+            's' => {
+                // move player down
+                temp.move_down(row);
+                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                if !player_collision {
+                    self.player = temp;
+                } else {
+                    self.add_msg(String::from("=> Player collided with a wall"));
+                }
             }
-        } else if dir == 'a' {
-            // move player left
-            temp.move_left();
-            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
-            if !player_collision {
-                self.player = temp;
-            } else {
-                self.add_msg(String::from("=> Player collided with a wall"));
+            'a' => {
+                // move player left
+                temp.move_left();
+                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                if !player_collision {
+                    self.player = temp;
+                } else {
+                    self.add_msg(String::from("=> Player collided with a wall"));
+                }
             }
-        } else if dir == 'd' {
-            // move player right
-            temp.move_right(col);
-            let player_collision = map::is_collision(&self.map, temp.x, temp.y);
-            if !player_collision {
-                self.player = temp;
-            } else {
-                self.add_msg(String::from("=> Player collided with a wall"));
+            'd' => {
+                // move player right
+                temp.move_right(col);
+                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                if !player_collision {
+                    self.player = temp;
+                } else {
+                    self.add_msg(String::from("=> Player collided with a wall"));
+                }
             }
+            'q' => {
+                self.add_msg(String::from("Player quit the game"));
+                self.status = 1;
+            }
+            _ => self.add_msg(String::from("Invalid key")),
         }
     }
 

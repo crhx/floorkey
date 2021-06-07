@@ -134,7 +134,6 @@ pub fn build_map(
 
 /// Function that takes in file name and create map from read in text file
 /// Returns the created map
-//pub fn read_in_map(name: &str) -> Map {
 pub fn read_in_map(level_number: u32) -> Map {
     let mut map = vec![vec![Tile::empty(); 0_usize]; 0_usize];
 
@@ -206,6 +205,13 @@ pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }
 
+///
+/// Function to find if the player collides with a wall
+/// @map : game map for finding walls 
+/// @cur_pos_x : current position of player wrt x co-ordinate
+/// @cur_pos_y : current position of player wrt y co-ordinate
+/// @returns : true if player collieds with wall otherwise returns false
+/// 
 pub fn is_collision(map: &Map, cur_pos_x: u32, cur_pos_y: u32) -> bool {
     let (row, col) = get_row_col(map);
 
@@ -213,14 +219,6 @@ pub fn is_collision(map: &Map, cur_pos_x: u32, cur_pos_y: u32) -> bool {
     if cur_pos_x >= row as u32 || cur_pos_y >= col as u32 {
         return true;
     }
-    /*
-            if map[cur_pos_x as usize][cur_pos_y as usize].print != '.'
-            {
-                return true;
-            }
-            false
-    */
-    // use the blocked flag instead of symbol...
-    // invisibile walls anyone?
+    // return true if wall
     map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }

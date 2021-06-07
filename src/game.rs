@@ -13,7 +13,10 @@ pub struct Game {
     player: object::Player,
     objects: object::Objects,
     inventory: object::Object,
+    // Game message storing
     message: Vec<String>,
+    // Game status 0 for continue, 1 for won, 2 for dead
+    status: u8,
 }
 
 impl Game {
@@ -36,6 +39,7 @@ impl Game {
             objects: Vec::new(),
             inventory: Object::empty(),
             message: Vec::new(),
+            status: 0,
         }
     }
 
@@ -53,7 +57,14 @@ impl Game {
         print!("\x1B[2J\x1B[1;1H");
 
         // todo: objects vector to pass to build_map
-        for line in map::build_map(&self.map, &self.player, &mut self.objects, &mut self.inventory, &mut self.message, status) {
+        for line in map::build_map(
+            &self.map,
+            &self.player,
+            &mut self.objects,
+            &mut self.inventory,
+            &mut self.message,
+            status,
+        ) {
             print!("{}\r\n", line);
         }
     }
@@ -103,19 +114,35 @@ impl Game {
         }
     }
 
+    /// Checks the tile where the user moved to and checks what kind of interaction it needs to take
     pub fn item_interaction(&mut self) {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
         for (i, item) in obj.iter().enumerate() {
             // Making sure that we only pick it up when the object is holdable
-            if temp_player.x == item.x && temp_player.y == item.y && item.holdable == true {
-                self.inventory = item.clone();
-                self.objects.remove(i);
+            if temp_player.x == item.x && temp_player.y == item.y {
+                if item.holdable == true {
+                    self.inventory = item.clone();
+                    self.objects.remove(i);
 
-                // Print what item we've picked up
-                let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
-                self.add_msg(String::from(msg));
+                    // Print what item we've picked up
+                    let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
+                    self.add_msg(String::from(msg));
+                } else {
+                    // If level exit has been met
+                    if item.descr == "Exit" {
+                        self.status = 1;
+
+                        // Print win message
+                        self.add_msg(String::from("\n\nYOU WON!!!"));
+                    }
+                }
             }
         }
+    }
+
+    /// Returns the game state 0 -> Continue 1 -> Won 2 -> Dead
+    pub fn game_status(&self) -> u8 {
+        self.status
     }
 }

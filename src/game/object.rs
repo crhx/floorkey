@@ -74,7 +74,7 @@ impl Object {
     }
 
     pub fn end_point(x: u32, y: u32) -> Self {
-        Object{
+        Object {
             x,
             y,
             print: '#',

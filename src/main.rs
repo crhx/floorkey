@@ -9,7 +9,6 @@ fn main() {
     // Using termion raw mode
     let _stdout = stdout().into_raw_mode().unwrap();
 
-    // Read in user input without pressing enter each time
     for b in io::stdin().bytes() {
         let b = b.unwrap();
         let c = b as char;
@@ -22,11 +21,12 @@ fn main() {
             game.item_interaction();
             game.print("playing".to_string());
 
-            if c == 'q' {
+            if c == 'q' || game.game_status() != 0 {
                 break;
             }
         }
     }
-
+    // Read in user input without pressing enter each time
+    
     game.print("finishing".to_string());
 }

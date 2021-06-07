@@ -8,6 +8,9 @@ use crate::game::object::Object;
 use colored::*;
 //use crate::game::monster::Monster;
 
+///
+/// Game contains different levels and each level has it's own map, objects and exit points
+/// 
 pub struct Level<'a> {
     pub level_name: &'a str,
     pub player_start_x: u32,
@@ -21,6 +24,11 @@ pub struct Level<'a> {
     //    pub monsters: Vec<Monster>,
 }
 
+///
+/// Function to create maps for each levels on the game
+/// @level_number : game level number
+/// @returns : level 
+/// 
 pub fn level(level_number: u32) -> Level<'static> {
     match level_number {
         1 => Level {
@@ -128,7 +136,6 @@ pub fn level(level_number: u32) -> Level<'static> {
 
             ]
             .to_vec(),
-            //                 [],
         },
         2 => Level {
             level_name: "Level 2",
@@ -230,7 +237,7 @@ pub fn level(level_number: u32) -> Level<'static> {
                     color: "Yellow".to_string(),
                     print_colored: 'ם'.to_string().color("Yellow"),
                     paired_item : "".to_string(),
-                    score : 20,
+                    score : 0,
                 },
                 Object {
                     x: 6,
@@ -245,11 +252,10 @@ pub fn level(level_number: u32) -> Level<'static> {
                     color: "Yellow".to_string(),
                     print_colored: 'ם'.to_string().color("Yellow"),
                     paired_item : "".to_string(),
-                    score : 20,
+                    score : 0,
                 },
             ]
             .to_vec(),
-            //                 [],
         },
 				3 => Level {
             level_name: "Level 3",
@@ -325,7 +331,6 @@ pub fn level(level_number: u32) -> Level<'static> {
                 },
             ]
             .to_vec(),
-            //                 [],
         },
 
         _ => panic!("call to initialize undefined level number in init_level()"),

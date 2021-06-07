@@ -7,6 +7,11 @@ extern crate colored;
 use crate::game::object::Object;
 use colored::*;
 
+
+///
+/// Game contains map, player all the objects list, player inventory 
+/// status of the game and game messages (Only store up to 4 messages)
+///
 #[derive(Clone, Debug)]
 pub struct Game {
     map: map::Map,
@@ -19,6 +24,9 @@ pub struct Game {
     status: u8,
 }
 
+///
+/// constructor for Game struct
+/// 
 impl Game {
     pub fn create_map_player(level_number: u32) -> Self {
         Game {
@@ -45,7 +53,12 @@ impl Game {
         }
     }
 
+    ///
     /// Stores game console messages to display
+    /// @self : game object
+    /// @msg : holds message to display
+    /// @returns : None
+    /// 
     pub fn add_msg(&mut self, msg: String) {
         // Only store up to 4 messages at a time for space efficiency
         while self.message.len() > 4 {
@@ -55,6 +68,12 @@ impl Game {
         self.message.push(msg);
     }
 
+    ///
+    /// Prints the map onto console 
+    /// @self : Game object
+    /// status : Game status
+    /// @retuns : None
+    /// 
     pub fn print(&mut self, status: String) {
         print!("\x1B[2J\x1B[1;1H");
 
@@ -130,7 +149,11 @@ impl Game {
         }
     }
 
+    ///
     /// Checks the tile where the user moved to and checks what kind of interaction it needs to take
+    /// @self : Game object
+    /// @retuns : None
+    /// 
     pub fn item_interaction(&mut self) {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
@@ -212,7 +235,11 @@ impl Game {
         }
     }
 
-    /// Returns the game state 0 -> Continue 1 -> Won 2 -> Dead
+    ///
+    /// To returns the game state 0 -> Continue 1 -> Won 2 -> Dead
+    /// @self : Game status
+    /// @returns : status numbers (0/1/2)
+    /// 
     pub fn game_status(&self) -> u8 {
         self.status
     }

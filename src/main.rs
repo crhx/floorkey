@@ -29,7 +29,6 @@ fn main() {
         }
     }
     // Read in user input without pressing enter each time
-
     game.print("finishing".to_string());
     println!("Time {} sec", now.elapsed().as_secs());
 }

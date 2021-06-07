@@ -14,8 +14,10 @@ use colored::*;
 // Map is made up of Tile x Tile
 pub type Map = Vec<Vec<Tile>>;
 
+///
 /// Map is created with Tile by Tile
 /// Each Tile has character to display, blocked, visited to display partial map
+/// 
 #[derive(Clone, Debug)]
 pub struct Tile {
     pub print: char,
@@ -37,19 +39,18 @@ impl Tile {
             print_colored: '.'.to_string().color("green"),
         }
     }
-
-    // dead_code
-    // pub fn to_wall(&mut self) {
-    //     self.print = 'W';
-    //     self.blocked = true;
-    //     self.visited = false;
-    //     self.color = "red".to_string();
-    //     self.print_colored = 'W'.to_string().color("red");
-    // }
 }
 
-/// Build a terminal printable map from map vector and overlay objects
-/// from object vector.
+/// 
+/// Build a terminal printable map from map vector and overlay objects from object vector.
+/// @map : map object
+/// @player : Player on the map
+/// @objects : vector of all the objects on the map
+/// @inventory : an object which player is hodling
+/// @message : game message to display on screen
+/// @game_status : status of the game (0 : continue, 1 : won, 2 : dead)
+/// @returns : vector of messages to display
+/// 
 pub fn build_map(
     map: &[Vec<Tile>],
     player: &Player,
@@ -57,7 +58,7 @@ pub fn build_map(
     inventory: &mut Object,
     message: &mut Vec<String>,
     game_status: String,
-) -> Vec<String> {
+    ) -> Vec<String> {
     // just build from map vector until object vector is finished
     //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
@@ -76,7 +77,6 @@ pub fn build_map(
     let mut colormap = vec![vec![ColoredCell::new(); 0]; 0];
 
     // build colormap from map
-
     for outer in map {
         let mut cells: Vec<ColoredCell> = Vec::new();
         for inner in outer {
@@ -119,9 +119,12 @@ pub fn build_map(
     result.push(String::from("\n"));
     result.push(String::from("----------- Inventory -----------"));
     result.push(String::from(""));
+    
+    // Add object to inventory if its holdable object
     if inventory.holdable == true {
         result.push(inventory.descr.clone());
     }
+    // Add player score to result vec
     result.push("Your Score :".to_owned()+ &player.score.to_string());
     result.push(String::from(""));
     
@@ -132,8 +135,11 @@ pub fn build_map(
     result
 }
 
+/// 
 /// Function that takes in file name and create map from read in text file
-/// Returns the created map
+/// @level_number : player level number in game
+/// @Returns : the created map
+/// 
 pub fn read_in_map(level_number: u32) -> Map {
     let mut map = vec![vec![Tile::empty(); 0_usize]; 0_usize];
 
@@ -155,6 +161,7 @@ pub fn read_in_map(level_number: u32) -> Map {
                     break;
                 }
             }
+            // match with boolmap bits: 0 = not blocked & not visited, 1 = blocked, 2 = visited, 3 = blocked & visited
             match boolmap[x].chars().nth(y).unwrap() {
                 '0' => {
                     tile.blocked = false;
@@ -181,26 +188,11 @@ pub fn read_in_map(level_number: u32) -> Map {
     map
 }
 
-/*            if "1-|+┌┘└┐┴┬├┤─│┼".contains(c) {
-                tile.to_wall();
-                tile.print = c;
-                tile.print_colored = c.to_string().color("red");
-            }
-
-            if "~%".contains(c) {
-                tile.to_wall();
-                tile.print = c;
-                tile.color = "blue".to_string();
-                tile.print_colored = c.to_string().color("blue");
-            }
-            line.push(tile);
-        }
-        map.push(line);
-    }
-
-    map
-}
-*/
+///
+/// Function get the number of rows and number of columns of the map
+/// @map : map object
+/// @returns : tuple of (no_of_row, no_of_column)
+/// 
 pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }

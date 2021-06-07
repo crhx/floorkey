@@ -139,6 +139,11 @@ impl Object {
             self.y += 1;
         }
     }
+
+    pub fn reposition_item(&mut self, new_x: u32, new_y: u32) {
+        self.x = new_x;
+        self.y = new_y;
+    }
 }
 
 pub fn read_in_obj(level_number: u32) -> Objects {

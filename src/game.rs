@@ -118,16 +118,38 @@ impl Game {
     pub fn item_interaction(&mut self) {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
+        let mut inv = self.inventory.clone();
+
         for (i, item) in obj.iter().enumerate() {
             // Making sure that we only pick it up when the object is holdable
             if temp_player.x == item.x && temp_player.y == item.y {
                 if item.holdable == true {
-                    self.inventory = item.clone();
-                    self.objects.remove(i);
+                    // If player is holding an item
+                    if inv.descr != "" {
+                        let pick = "=> You've dropped your ".to_owned() + &inv.clone().descr;
+                        self.add_msg(String::from(pick));
 
-                    // Print what item we've picked up
-                    let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
-                    self.add_msg(String::from(msg));
+                        // Put the object on map into player's inventory and remove it from the map
+                        self.inventory = item.clone();
+                        self.objects.remove(i);
+
+                        // Reposition the coordinates of player's inventory item to current player's position
+                        inv.reposition_item(temp_player.x, temp_player.y);
+                        // Drop it onto the map by just adding that Object to the objects
+                        self.objects.push(inv.clone());
+
+                        let drop = "=> You just picked up a/an ".to_owned() + &item.descr;
+                        self.add_msg(String::from(drop));
+                    }
+                    // If player is not holding an item then just pick it up
+                    else {
+                        self.inventory = item.clone();
+                        self.objects.remove(i);
+
+                        // Print what item we've picked up
+                        let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
+                        self.add_msg(String::from(msg));
+                    }
                 } else {
                     // Print what item we've picked up
                     let msg = "=> You just encountered a/an ".to_owned() + &item.descr;

@@ -1,6 +1,6 @@
+mod level;
 mod map;
 mod object;
-mod level;
 
 extern crate colored;
 
@@ -13,6 +13,7 @@ pub struct Game {
     player: object::Player,
     objects: object::Objects,
     inventory: object::Object,
+    message: Vec<String>,
 }
 
 impl Game {
@@ -34,6 +35,7 @@ impl Game {
             ),
             objects: Vec::new(),
             inventory: Object::empty(),
+            message: Vec::new(),
         }
     }
 
@@ -43,6 +45,15 @@ impl Game {
             map::print_map(&self.map);
         }
     */
+
+    pub fn add_msg(&mut self, msg: String) {
+        while self.message.len() > 6 {
+            self.message.remove(0);
+        }
+
+        self.message.push(msg);
+        // self.message.push(String::from("\n"));
+    }
 
     pub fn print(&mut self, status: String) {
         /*
@@ -61,7 +72,7 @@ impl Game {
         print!("\x1B[2J\x1B[1;1H");
 
         // todo: objects vector to pass to build_map
-        for line in map::build_map(&self.map, &self.player, &mut self.objects, status) {
+        for line in map::build_map(&self.map, &self.player, &mut self.objects, &mut self.message, status) {
             print!("{}\r\n", line);
         }
         /*
@@ -95,7 +106,8 @@ impl Game {
             if !player_collision {
                 self.player = temp;
             } else {
-                println!("Player collided with an object");
+                self.add_msg(String::from("=> Player collided with a wall"));
+                // println!("Player collided with an object");
             }
         } else if dir == 's' {
             // move player down
@@ -104,7 +116,8 @@ impl Game {
             if !player_collision {
                 self.player = temp;
             } else {
-                println!("Player collided with wall");
+                self.add_msg(String::from("=> Player collided with a wall"));
+                // println!("Player collided with wall");
             }
         } else if dir == 'a' {
             // move player left
@@ -113,7 +126,8 @@ impl Game {
             if !player_collision {
                 self.player = temp;
             } else {
-                println!("Player collided with wall");
+                self.add_msg(String::from("=> Player collided with a wall"));
+                // println!("Player collided with wall");
             }
         } else if dir == 'd' {
             // move player right
@@ -122,7 +136,8 @@ impl Game {
             if !player_collision {
                 self.player = temp;
             } else {
-                println!("Player collided with wall");
+                self.add_msg(String::from("=> Player collided with a wall"));
+                // println!("Player collided with wall");
             }
         }
     }

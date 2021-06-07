@@ -129,7 +129,6 @@ impl Game {
                 if item.holdable {
                     // If player is holding an item
                     if !inv.descr.is_empty() {
-
                         if inv.descr == "Fire" {
                             self.add_msg("=> Player did not find water and died".to_string());
                             self.status = 2;
@@ -138,8 +137,8 @@ impl Game {
                             self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
 
                             // Put the object on map into player's inventory and remove it from the map
-                            self.inventory = item.clone();
-                            self.objects.remove(i);
+                            //self.inventory = item.clone();
+                            //self.objects.remove(i);
 
                             // Reposition the coordinates of player's inventory item to current player's position
                             inv.reposition_item(temp_player.x, temp_player.y);
@@ -151,12 +150,16 @@ impl Game {
                     }
                     // If player is not holding an item then just pick it up
                     else {
-                        self.inventory = item.clone();
-                        self.objects.remove(i);
+                        //self.inventory = item.clone();
+                        //self.objects.remove(i);
 
                         // Print what item we've picked up
                         self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
                     }
+
+                    self.inventory = item.clone();
+                    self.objects.remove(i);
+                    self.player.score += &self.inventory.score;
                 }
                 // If it's an interactable object
                 else {

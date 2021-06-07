@@ -118,10 +118,13 @@ pub fn build_map(
     // Add player Inventory
     result.push(String::from("\n"));
     result.push(String::from("----------- Inventory -----------"));
+    result.push(String::from(""));
     if inventory.holdable == true {
-    result.push(inventory.descr.clone());
+        result.push(inventory.descr.clone());
     }
-
+    result.push("Your Score :".to_owned()+ &player.score.to_string());
+    result.push(String::from(""));
+    
     // Add game's messages at the very end
     result.push(String::from("----------- Game Message -----------"));
     result.append(&mut message.clone());

@@ -3,6 +3,7 @@
 //! This module takes care of the game's object functionality
 //! Object can be interactables on the map or player
 
+use crate::game::level::*;
 extern crate colored;
 use colored::*;
 
@@ -138,4 +139,8 @@ impl Object {
             self.y += 1;
         }
     }
+}
+
+pub fn read_in_obj(level_number: u32) -> Objects {
+    level(level_number).objects
 }

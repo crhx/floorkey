@@ -20,9 +20,9 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn create_map_player(map_name: &str) -> Self {
+    pub fn create_map_player(level_number: u32) -> Self {
         Game {
-            map: map::read_in_map(1),
+            map: map::read_in_map(level_number),
             player: object::Object::set_full(
                 2_u32,
                 2_u32,
@@ -36,7 +36,7 @@ impl Game {
                 "purple".to_string(),
                 "purple".to_string().color("purple"),
             ),
-            objects: Vec::new(),
+            objects: object::read_in_obj(level_number),
             inventory: Object::empty(),
             message: Vec::new(),
             status: 0,

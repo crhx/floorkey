@@ -4,7 +4,7 @@ use std::io::{self, stdout, Read};
 use termion::raw::IntoRawMode;
 
 fn main() {
-    let mut game = game::Game::create_map_player("map2.txt");
+    let mut game = game::Game::create_map_player(1);
     game.print("game_loading".to_string());
     // Using termion raw mode
     let _stdout = stdout().into_raw_mode().unwrap();

@@ -148,6 +148,8 @@ pub fn build_map(
         let mut potion: Object = Object::empty();
         potion.to_potion();
         objects.push(potion);
+
+        objects.push(Object::end_point(3, 19));
     }
     for amount_of in objects {
         colormap[amount_of.x as usize][amount_of.y as usize].print_colored =

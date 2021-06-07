@@ -73,6 +73,22 @@ impl Object {
         }
     }
 
+    pub fn end_point(x: u32, y: u32) -> Self {
+        Object{
+            x,
+            y,
+            print: '#',
+            attri: 0,
+            mat: 0,
+            status: 0,
+            quantity: 1,
+            descr: "Exit".to_string(),
+            holdable: false,
+            color: "pink".to_string(),
+            print_colored: '#'.to_string().color("pink"),
+        }
+    }
+
     pub fn to_potion(&mut self) {
         self.x = 4;
         self.y = 3;

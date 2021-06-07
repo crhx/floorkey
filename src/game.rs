@@ -146,7 +146,7 @@ impl Game {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
         for (i, item) in obj.iter().enumerate() {
-            if temp_player.x == item.x && temp_player.y == item.y {
+            if temp_player.x == item.x && temp_player.y == item.y && item.holdable == true {
                 self.inventory = item.clone();
                 self.objects.remove(i);
 

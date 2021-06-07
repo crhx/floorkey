@@ -38,19 +38,20 @@ impl Tile {
         }
     }
 
-    pub fn to_wall(&mut self) {
-        self.print = 'W';
-        self.blocked = true;
-        self.visited = false;
-        self.color = "red".to_string();
-        self.print_colored = 'W'.to_string().color("red");
-    }
+    // dead_code
+    // pub fn to_wall(&mut self) {
+    //     self.print = 'W';
+    //     self.blocked = true;
+    //     self.visited = false;
+    //     self.color = "red".to_string();
+    //     self.print_colored = 'W'.to_string().color("red");
+    // }
 }
 
 /// Build a terminal printable map from map vector and overlay objects
 /// from object vector.
 pub fn build_map(
-    map: &Vec<Vec<Tile>>,
+    map: &[Vec<Tile>],
     player: &Player,
     objects: &mut Vec<Object>,
     inventory: &mut Object,
@@ -130,7 +131,7 @@ pub fn build_map(
 /// Returns the created map
 //pub fn read_in_map(name: &str) -> Map {
 pub fn read_in_map(level_number: u32) -> Map {
-    let mut map = vec![vec![Tile::empty(); 0 as usize]; 0 as usize];
+    let mut map = vec![vec![Tile::empty(); 0_usize]; 0_usize];
 
     // Iterate through string and modify the all empty map
     let colormap = &level(level_number).map_colors;

@@ -77,6 +77,8 @@ pub fn level(level_number: u32) -> Level<'static> {
                     holdable: false,
                     color: "white".to_string(),
                     print_colored: '0'.to_string().color("white"),
+                    paired_item : "".to_string(),
+                    score : 0,
                 },
                 Object {
                     x: 6,
@@ -90,6 +92,8 @@ pub fn level(level_number: u32) -> Level<'static> {
                     holdable: false,
                     color: "white".to_string(),
                     print_colored: '0'.to_string().color("white"),
+                    paired_item : "".to_string(),
+                    score : 0,
                 },
                 Object {
                     x: 7,
@@ -103,6 +107,8 @@ pub fn level(level_number: u32) -> Level<'static> {
                     holdable: true,
                     color: "yellow".to_string(),
                     print_colored: 'ך'.to_string().color("yellow"),
+                    paired_item : "".to_string(),
+                    score : 0,
                 },
 								Object {
                     x: 4,
@@ -116,6 +122,8 @@ pub fn level(level_number: u32) -> Level<'static> {
                     holdable: false,
                     color: "pink".to_string(),
                     print_colored: 'E'.to_string().color("pink"),
+                    paired_item : "".to_string(),
+                    score : 0,
                 },
 
             ]
@@ -194,8 +202,6 @@ pub fn level(level_number: u32) -> Level<'static> {
                     paired_item : "".to_string(),
                     score : 0,
                 },
-<<<<<<< HEAD
-=======
                 Object {
                     x: 1,
                     y: 1,
@@ -241,7 +247,6 @@ pub fn level(level_number: u32) -> Level<'static> {
                     paired_item : "".to_string(),
                     score : 20,
                 },
->>>>>>> bdfc06913a146053aa344cfbe71a0e9806043b90
             ]
             .to_vec(),
             //                 [],

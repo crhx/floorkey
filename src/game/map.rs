@@ -86,7 +86,7 @@ pub fn build_map(
         }
         colormap.push(cells);
     }
-
+    
     // overlay objects
     //if game_status == "game_loading" {
        // let mut potion: Object = Object::empty();
@@ -98,7 +98,7 @@ pub fn build_map(
     for amount_of in objects {
         colormap[amount_of.x as usize][amount_of.y as usize].print_colored =
             amount_of.print_colored.clone();
-    }
+    } 
 
     // todo: add color to objects
     // todo: accept objects vector
@@ -118,8 +118,13 @@ pub fn build_map(
     // Add player Inventory
     result.push(String::from("\n"));
     result.push(String::from("----------- Inventory -----------"));
-    result.push(inventory.descr.clone());
-
+    result.push(String::from(""));
+    if inventory.holdable == true {
+        result.push(inventory.descr.clone());
+    }
+    result.push("Your Score :".to_owned()+ &player.score.to_string());
+    result.push(String::from(""));
+    
     // Add game's messages at the very end
     result.push(String::from("----------- Game Message -----------"));
     result.append(&mut message.clone());

@@ -35,6 +35,8 @@ impl Game {
                 false,
                 "purple".to_string(),
                 "purple".to_string().color("purple"),
+                "".to_string(),
+                0,
             ),
             objects: object::read_in_obj(level_number),
             inventory: Object::empty(),
@@ -127,27 +129,37 @@ impl Game {
                 if item.holdable {
                     // If player is holding an item
                     if !inv.descr.is_empty() {
-                        self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
+                        if inv.descr == "Fire" {
+                            self.add_msg("=> Player did not find water and died".to_string());
+                            self.status = 2;
+                        }
+                        else{
+                            self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
 
-                        // Put the object on map into player's inventory and remove it from the map
-                        self.inventory = item.clone();
-                        self.objects.remove(i);
+                            // Put the object on map into player's inventory and remove it from the map
+                            //self.inventory = item.clone();
+                            //self.objects.remove(i);
 
-                        // Reposition the coordinates of player's inventory item to current player's position
-                        inv.reposition_item(temp_player.x, temp_player.y);
-                        // Drop it onto the map by just adding that Object to the objects
-                        self.objects.push(inv.clone());
+                            // Reposition the coordinates of player's inventory item to current player's position
+                            inv.reposition_item(temp_player.x, temp_player.y);
+                            // Drop it onto the map by just adding that Object to the objects
+                            self.objects.push(inv.clone());
 
-                        self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
+                            self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
+                        }
                     }
                     // If player is not holding an item then just pick it up
                     else {
-                        self.inventory = item.clone();
-                        self.objects.remove(i);
+                        //self.inventory = item.clone();
+                        //self.objects.remove(i);
 
                         // Print what item we've picked up
                         self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
                     }
+
+                    self.inventory = item.clone();
+                    self.objects.remove(i);
+                    self.player.score += &self.inventory.score;
                 }
                 // If it's an interactable object
                 else {
@@ -156,10 +168,30 @@ impl Game {
 
                     // If level exit has been met
                     if item.descr == "Exit" {
-                        self.status = 1;
+                        if inv.descr == "Fire"{
+                            self.add_msg("=> You can not exit yet ! look for water".to_string());
+                        }
+                        else{
+                            self.status = 1;
 
                         // Print win message
                         self.add_msg(String::from("\n\nYOU WON!!!"));
+                        }
+                    }
+                    else if item.descr == "Fire" {
+                        self.add_msg("=>To live longer encounter 'Water' next ".to_string());
+                        self.inventory = item.clone();
+                        self.status = 0;
+                    }
+                    else if item.descr == "Water"{
+                        if inv.descr == "Fire"{
+                            self.add_msg("=> You got saved, continue playing...".to_string());
+                        }
+                        else {
+                            self.add_msg("=> That was a one nice bath".to_string());
+                        }
+                        self.status = 0;
+                        self.inventory = object::Object::empty();
                     }
                 }
             }

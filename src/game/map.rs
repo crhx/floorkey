@@ -88,13 +88,13 @@ pub fn build_map(
     }
 
     // overlay objects
-    if game_status == "game_loading" {
-        let mut potion: Object = Object::empty();
-        potion.to_potion();
-        objects.push(potion);
+    //if game_status == "game_loading" {
+       // let mut potion: Object = Object::empty();
+        //potion.to_potion();
+       // objects.push(potion);
 
-        objects.push(Object::end_point(3, 19));
-    }
+      //  objects.push(Object::end_point(3, 19));
+    //}
     for amount_of in objects {
         colormap[amount_of.x as usize][amount_of.y as usize].print_colored =
             amount_of.print_colored.clone();

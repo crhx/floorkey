@@ -39,58 +39,23 @@ impl Game {
         }
     }
 
-    /*
-    // dead_code
-        pub fn print_only_map(&self) {
-            map::print_map(&self.map);
-        }
-    */
-
+    /// Stores game console messages to display
     pub fn add_msg(&mut self, msg: String) {
+        // Only store up to 4 messages at a time for space efficiency
         while self.message.len() > 4 {
             self.message.remove(0);
         }
 
         self.message.push(msg);
-        // self.message.push(String::from("\n"));
     }
 
     pub fn print(&mut self, status: String) {
-        /*
-                let (row, col) = map::get_row_col(&self.map);
-
-                let mut print_map = vec![vec!['.'; col as usize]; row as usize];
-
-                for x in 0..col {
-                    for y in 0..row {
-                        print_map[y as usize][x as usize] = self.map[y as usize][x as usize].print;
-                    }
-                }
-
-                print_map[self.player.x as usize][self.player.y as usize] = '@';
-        */
         print!("\x1B[2J\x1B[1;1H");
 
         // todo: objects vector to pass to build_map
         for line in map::build_map(&self.map, &self.player, &mut self.objects, &mut self.inventory, &mut self.message, status) {
             print!("{}\r\n", line);
         }
-        /*
-                for x in print_map.iter() {
-                    print!("\r\n");
-                    for y in x.iter() {
-                        if y == &'W' {
-                            print!("{}", y.to_string().red());
-                        } else if y == &'.' {
-                            print!("{}", y.to_string().green());
-                        } else if y == &'@' {
-                            print!("{}", y.to_string().purple());
-                        } else {
-                            print!("{}", y.to_string().white());
-                        }
-                    }
-                }
-        */
     }
 
     pub fn player_movement(&mut self, dir: char) {
@@ -107,7 +72,6 @@ impl Game {
                 self.player = temp;
             } else {
                 self.add_msg(String::from("=> Player collided with a wall"));
-                // println!("Player collided with an object");
             }
         } else if dir == 's' {
             // move player down
@@ -117,7 +81,6 @@ impl Game {
                 self.player = temp;
             } else {
                 self.add_msg(String::from("=> Player collided with a wall"));
-                // println!("Player collided with wall");
             }
         } else if dir == 'a' {
             // move player left
@@ -127,7 +90,6 @@ impl Game {
                 self.player = temp;
             } else {
                 self.add_msg(String::from("=> Player collided with a wall"));
-                // println!("Player collided with wall");
             }
         } else if dir == 'd' {
             // move player right
@@ -137,7 +99,6 @@ impl Game {
                 self.player = temp;
             } else {
                 self.add_msg(String::from("=> Player collided with a wall"));
-                // println!("Player collided with wall");
             }
         }
     }
@@ -146,10 +107,12 @@ impl Game {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
         for (i, item) in obj.iter().enumerate() {
+            // Making sure that we only pick it up when the object is holdable
             if temp_player.x == item.x && temp_player.y == item.y && item.holdable == true {
                 self.inventory = item.clone();
                 self.objects.remove(i);
 
+                // Print what item we've picked up
                 let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
                 self.add_msg(String::from(msg));
             }

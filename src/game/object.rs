@@ -86,7 +86,7 @@ impl Object {
             descr: "Exit".to_string(),
             holdable: false,
             color: "pink".to_string(),
-            print_colored: '#'.to_string().color("pink"),
+            print_colored: '#'.to_string().color("cyan"),
         }
     }
 

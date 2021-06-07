@@ -129,6 +129,10 @@ impl Game {
                     let msg = "=> You just picked up a/an ".to_owned() + &item.descr;
                     self.add_msg(String::from(msg));
                 } else {
+                    // Print what item we've picked up
+                    let msg = "=> You just encountered a/an ".to_owned() + &item.descr;
+                    self.add_msg(String::from(msg));
+
                     // If level exit has been met
                     if item.descr == "Exit" {
                         self.status = 1;

@@ -16,19 +16,20 @@ pub type Player = Object;
 /// 
 #[derive(Clone, Debug)]
 pub struct Object {
-    pub x: u32,
-    pub y: u32,
+    pub x: usize,
+    pub y: usize,
     pub print: char,
-    pub attri: u32,
-    pub mat: u32,
-    pub status: u32,
-    pub quantity: u32,
+    pub attri: usize,
+    pub mat: usize,
+    pub status: usize,
+    pub quantity: usize,
     pub descr: String,
     pub holdable: bool,
     pub color: String,
     pub print_colored: ColoredString,
     pub paired_item : String,
-    pub score : u32,
+    pub score : usize,
+		pub id : usize
 }
 
 ///
@@ -37,19 +38,20 @@ pub struct Object {
 impl Object {
     /// Set all the necessary components of an object
     pub fn set_full(
-        x: u32,
-        y: u32,
+        x: usize,
+        y: usize,
         print: char,
-        attri: u32,
-        mat: u32,
-        status: u32,
-        quantity: u32,
+        attri: usize,
+        mat: usize,
+        status: usize,
+        quantity: usize,
         descr: String,
         holdable: bool,
         color: String,
         print_colored: ColoredString,
         paired_item : String,
-        score : u32,
+        score : usize,
+				id : usize,
     ) -> Self {
         Object {
             x,
@@ -65,6 +67,7 @@ impl Object {
             print_colored,
             paired_item,
             score,
+						id,
         }
     }
     /// Creates empty object
@@ -83,6 +86,7 @@ impl Object {
             print_colored: '0'.to_string().color("green"),
             paired_item : "".to_string(),
             score : 0,
+						id : 0,
         }
     }
 
@@ -101,7 +105,7 @@ impl Object {
     /// Function to moving down (x + 1) in the map
     /// 
     pub fn move_down(&mut self, height: u64) {
-        if self.x + 1 >= height as u32 {
+        if self.x + 1 >= height as usize {
             println!("Out of bound!");
         } else {
             self.x += 1;
@@ -123,7 +127,7 @@ impl Object {
     /// Function to moving right (y + 1) in the map
     /// 
     pub fn move_right(&mut self, width: u64) {
-        if self.y + 1 >= width as u32 {
+        if self.y + 1 >= width as usize {
             println!("Out of bound!");
         } else {
             self.y += 1;
@@ -136,7 +140,7 @@ impl Object {
     /// @new_x : x co-ordinate value to place the object
     /// @new_y : y co-ordinate value to place the object
     /// 
-    pub fn reposition_item(&mut self, new_x: u32, new_y: u32) {
+    pub fn reposition_item(&mut self, new_x: usize, new_y: usize) {
         self.x = new_x;
         self.y = new_y;
     }
@@ -148,6 +152,6 @@ impl Object {
 /// @level_number : game level number 
 /// @retuns : vector of objects from the given game level 
 /// 
-pub fn read_in_obj(level_number: u32) -> Objects {
+pub fn read_in_obj(level_number: usize) -> Objects {
     level(level_number).objects
 }

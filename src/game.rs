@@ -28,23 +28,24 @@ pub struct Game {
 /// constructor for Game struct
 /// 
 impl Game {
-    pub fn create_map_player(level_number: u32) -> Self {
+    pub fn create_map_player(level_number: usize) -> Self {
         Game {
             map: map::read_in_map(level_number),
             player: object::Object::set_full(
-                2_u32,
-                2_u32,
+                2,
+                2,
                 '@',
-                1_u32,
-                0_u32,
-                0_u32,
-                1_u32,
+                1,
+                0,
+                0,
+                1,
                 String::from("player"),
                 false,
                 "purple".to_string(),
                 "purple".to_string().color("purple"),
                 "".to_string(),
                 0,
+								98,
             ),
             objects: object::read_in_obj(level_number),
             inventory: Object::empty(),
@@ -242,4 +243,21 @@ impl Game {
     pub fn game_status(&self) -> u8 {
         self.status
     }
+		pub fn turn_actions(&mut self) {
+			let objects_iter = &self.objects.clone();
+			for (i, object) in objects_iter.iter().enumerate() {
+					if self.player.x == object.x && self.player.y == object.y {
+						match object.id {
+							1 | 2 => { 
+											if self.inventory.id == 3 {
+												&self.objects.swap_remove(i);
+											}
+								}
+								_ => {
+							}
+
+					}
+			}
+			}
+		}
 }

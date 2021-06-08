@@ -21,6 +21,7 @@ fn main() {
         } else {
             game.player_movement(c);
             game.item_interaction();
+						game.turn_actions();
             game.print();
 
             if c == 'q' || game.game_status() != 0 {

@@ -74,7 +74,7 @@ impl Game {
     /// status : Game status
     /// @retuns : None
     /// 
-    pub fn print(&mut self, status: String) {
+    pub fn print(&mut self) {
         print!("\x1B[2J\x1B[1;1H");
 
         // todo: objects vector to pass to build_map
@@ -84,7 +84,6 @@ impl Game {
             &mut self.objects,
             &mut self.inventory,
             &mut self.message,
-            status,
         ) {
             print!("{}\r\n", line);
         }

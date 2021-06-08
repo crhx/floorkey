@@ -57,7 +57,6 @@ pub fn build_map(
     objects: &mut Vec<Object>,
     inventory: &mut Object,
     message: &mut Vec<String>,
-    game_status: String,
     ) -> Vec<String> {
     // just build from map vector until object vector is finished
     //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
@@ -87,14 +86,6 @@ pub fn build_map(
         colormap.push(cells);
     }
     
-    // overlay objects
-    //if game_status == "game_loading" {
-       // let mut potion: Object = Object::empty();
-        //potion.to_potion();
-       // objects.push(potion);
-
-      //  objects.push(Object::end_point(3, 19));
-    //}
     for amount_of in objects {
         colormap[amount_of.x as usize][amount_of.y as usize].print_colored =
             amount_of.print_colored.clone();
@@ -121,7 +112,7 @@ pub fn build_map(
     result.push(String::from(""));
     
     // Add object to inventory if its holdable object
-    if inventory.holdable == true {
+    if inventory.holdable {
         result.push(inventory.descr.clone());
     }
     // Add player score to result vec

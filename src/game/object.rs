@@ -86,41 +86,6 @@ impl Object {
         }
     }
 
-    /// Creates game exit object
-    pub fn end_point(x: u32, y: u32) -> Self {
-        Object {
-            x,
-            y,
-            print: '#',
-            attri: 0,
-            mat: 0,
-            status: 0,
-            quantity: 1,
-            descr: "Exit".to_string(),
-            holdable: false,
-            color: "pink".to_string(),
-            print_colored: '#'.to_string().color("cyan"),
-            paired_item : "".to_string(),
-            score : 0,
-        }
-    }
-
-    pub fn to_potion(&mut self) {
-        self.x = 4;
-        self.y = 3;
-        self.print = 'ם';
-        self.attri = 0;
-        self.mat = 0;
-        self.status = 0;
-        self.quantity = 1;
-        self.descr = "Potion".to_string();
-        self.holdable = true;
-        self.color = "yellow".to_string();
-        self.print_colored = 'ם'.to_string().color("yellow");
-        self.paired_item = "".to_string();
-        self.score = 10;
-    }
-
     ///
     /// Function tp moving up (x - 1) in the map
     /// 

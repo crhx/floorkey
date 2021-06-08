@@ -7,7 +7,7 @@ use std::time::Instant;
 fn main() {
     let now = Instant::now();
     let mut game = game::Game::create_map_player(1);
-    game.print("game_loading".to_string());
+    game.print();
     // Using termion raw mode
     let _stdout = stdout().into_raw_mode().unwrap();
 
@@ -21,7 +21,7 @@ fn main() {
         } else {
             game.player_movement(c);
             game.item_interaction();
-            game.print("playing".to_string());
+            game.print();
 
             if c == 'q' || game.game_status() != 0 {
                 break;
@@ -29,6 +29,6 @@ fn main() {
         }
     }
     // Read in user input without pressing enter each time
-    game.print("finishing".to_string());
+    game.print();
     println!("Time {} sec", now.elapsed().as_secs());
 }

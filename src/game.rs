@@ -5,11 +5,9 @@ mod object;
 extern crate colored;
 
 use crate::game::object::Object;
-use colored::*;
-
 
 ///
-/// Game contains map, player all the objects list, player inventory 
+/// Game contains map, player all the objects list, player inventory
 /// status of the game and game messages (Only store up to 4 messages)
 ///
 #[derive(Clone, Debug)]
@@ -26,27 +24,14 @@ pub struct Game {
 
 ///
 /// constructor for Game struct
-/// 
+///
 impl Game {
     pub fn create_map_player(level_number: usize) -> Self {
+        let mut temp_player = Object::empty();
+        temp_player.init_player();
         Game {
             map: map::read_in_map(level_number),
-            player: object::Object::set_full(
-                2,
-                2,
-                '@',
-                1,
-                0,
-                0,
-                1,
-                String::from("player"),
-                false,
-                "purple".to_string(),
-                "purple".to_string().color("purple"),
-                "".to_string(),
-                0,
-								98,
-            ),
+            player: temp_player,
             objects: object::read_in_obj(level_number),
             inventory: Object::empty(),
             message: Vec::new(),
@@ -59,7 +44,7 @@ impl Game {
     /// @self : game object
     /// @msg : holds message to display
     /// @returns : None
-    /// 
+    ///
     pub fn add_msg(&mut self, msg: String) {
         // Only store up to 4 messages at a time for space efficiency
         while self.message.len() > 4 {
@@ -70,11 +55,11 @@ impl Game {
     }
 
     ///
-    /// Prints the map onto console 
+    /// Prints the map onto console
     /// @self : Game object
     /// status : Game status
     /// @retuns : None
-    /// 
+    ///
     pub fn print(&mut self) {
         print!("\x1B[2J\x1B[1;1H");
 
@@ -91,7 +76,7 @@ impl Game {
     }
 
     ///
-    /// Function for moving player in all different directions 
+    /// Function for moving player in all different directions
     /// @self : game object
     /// @dir : which direction player wants to move
     /// @return : None
@@ -100,7 +85,7 @@ impl Game {
         let (row, col) = map::get_row_col(&self.map);
         let mut temp = self.player.clone();
 
-        match dir { 
+        match dir {
             'w' => {
                 // move player up
                 temp.move_up();
@@ -108,7 +93,7 @@ impl Game {
                 if !player_collision {
                     self.player = temp;
                 } else {
-                    self.add_msg(String::from("=> Player collided with a wall"));
+                    self.add_msg(String::from("=> You cannot move there"));
                 }
             }
             's' => {
@@ -118,7 +103,7 @@ impl Game {
                 if !player_collision {
                     self.player = temp;
                 } else {
-                    self.add_msg(String::from("=> Player collided with a wall"));
+                    self.add_msg(String::from("=> You cannot move there"));
                 }
             }
             'a' => {
@@ -128,7 +113,7 @@ impl Game {
                 if !player_collision {
                     self.player = temp;
                 } else {
-                    self.add_msg(String::from("=> Player collided with a wall"));
+                    self.add_msg(String::from("=> You cannot move there"));
                 }
             }
             'd' => {
@@ -138,7 +123,7 @@ impl Game {
                 if !player_collision {
                     self.player = temp;
                 } else {
-                    self.add_msg(String::from("=> Player collided with a wall"));
+                    self.add_msg(String::from("=> You cannot move there"));
                 }
             }
             'q' => {
@@ -153,12 +138,14 @@ impl Game {
     /// Checks the tile where the user moved to and checks what kind of interaction it needs to take
     /// @self : Game object
     /// @retuns : None
-    /// 
+    ///
     pub fn item_interaction(&mut self) {
         let temp_player = self.player.clone();
         let obj = self.objects.clone();
         let mut inv = self.inventory.clone();
-
+        if self.player.id < 20 {
+            self.player.id -= 1;
+        }
         for (i, item) in obj.iter().enumerate() {
             // Making sure that we only pick it up when the object is holdable
             if temp_player.x == item.x && temp_player.y == item.y {
@@ -166,24 +153,18 @@ impl Game {
                 if item.holdable {
                     // If player is holding an item
                     if !inv.descr.is_empty() {
-                        if inv.descr == "Fire" {
-                            self.add_msg("=> Player did not find water and died".to_string());
-                            self.status = 2;
-                        }
-                        else{
-                            self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
+                        self.add_msg("=> You've dropped your ".to_owned() + &inv.clone().descr);
 
-                            // Put the object on map into player's inventory and remove it from the map
-                            //self.inventory = item.clone();
-                            //self.objects.remove(i);
+                        // Put the object on map into player's inventory and remove it from the map
+                        //self.inventory = item.clone();
+                        //self.objects.remove(i);
 
-                            // Reposition the coordinates of player's inventory item to current player's position
-                            inv.reposition_item(temp_player.x, temp_player.y);
-                            // Drop it onto the map by just adding that Object to the objects
-                            self.objects.push(inv.clone());
+                        // Reposition the coordinates of player's inventory item to current player's position
+                        inv.reposition_item(temp_player.x, temp_player.y);
+                        // Drop it onto the map by just adding that Object to the objects
+                        self.objects.push(inv.clone());
 
-                            self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
-                        }
+                        self.add_msg("=> You just picked up a/an ".to_owned() + &item.descr);
                     }
                     // If player is not holding an item then just pick it up
                     else {
@@ -205,30 +186,19 @@ impl Game {
 
                     // If level exit has been met
                     if item.descr == "Exit" {
-                        if inv.descr == "Fire"{
-                            self.add_msg("=> You can not exit yet ! look for water".to_string());
-                        }
-                        else{
-                            self.status = 1;
+                        self.status = 1;
 
                         // Print win message
                         self.add_msg(String::from("\n\nYOU WON!!!"));
-                        }
-                    }
-                    else if item.descr == "Fire" {
-                        self.add_msg("=>To live longer encounter 'Water' next ".to_string());
-                        self.inventory = item.clone();
-                        self.status = 0;
-                    }
-                    else if item.descr == "Water"{
-                        if inv.descr == "Fire"{
+                    } else if item.descr == "Fire" {
+                        self.add_msg("=> To live longer encounter 'Water' next ".to_string());
+                        self.player.id = self.player.id / 2;
+                    } else if item.descr == "Water" {
+                        if self.player.id < 20 {
                             self.add_msg("=> You got saved, continue playing...".to_string());
+                            self.player.id = 20;
                         }
-                        else {
-                            self.add_msg("=> That was a one nice bath".to_string());
-                        }
-                        self.status = 0;
-                        self.inventory = object::Object::empty();
+                        self.add_msg("=> That was a one nice bath".to_string());
                     }
                 }
             }
@@ -239,30 +209,33 @@ impl Game {
     /// To returns the game state 0 -> Continue 1 -> Won 2 -> Dead
     /// @self : Game status
     /// @returns : status numbers (0/1/2)
-    /// 
-    pub fn game_status(&self) -> u8 {
-        self.status
+    ///
+    pub fn game_status(&mut self) -> u8 {
+        if self.player.id == 0 {
+            self.add_msg("=> You burned to a crisp! RIP!".to_string());
+            return 2_u8;
+        } else {
+            self.status
+        }
     }
-		pub fn turn_actions(&mut self) {
-			let objects_iter = &self.objects.clone();
-			for (i, object) in objects_iter.iter().enumerate() {
-					if self.player.x == object.x && self.player.y == object.y {
-						match object.id {
-							1 | 2 => { 
-											if self.inventory.id == 3 {
-												&self.objects.swap_remove(i);
-											}
-								}
-							80 => { 
-											if self.inventory.id == 3 {
-												&self.objects.swap_remove(i);
-											}
-										}
-								_ => {
-							}
-
-					}
-			}
-			}
-		}
+    pub fn turn_actions(&mut self) {
+        let objects_iter = &self.objects.clone();
+        for (i, object) in objects_iter.iter().enumerate() {
+            if self.player.x == object.x && self.player.y == object.y {
+                match object.id {
+                    1 | 2 => {
+                        if self.inventory.id == 3 {
+                            self.objects.swap_remove(i);
+                        }
+                    }
+                    80 => {
+                        if self.inventory.id == 3 {
+                            self.objects.swap_remove(i);
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
 }

@@ -1,35 +1,43 @@
 mod game;
 
 use std::io::{self, stdout, Read};
-use termion::raw::IntoRawMode;
 use std::time::Instant;
+use termion::raw::IntoRawMode;
 
 fn main() {
     let now = Instant::now();
-    let mut game = game::Game::create_map_player(1);
-    game.print();
-    // Using termion raw mode
-    let _stdout = stdout().into_raw_mode().unwrap();
+    let mut level = 1;
 
-    for b in io::stdin().bytes() {
-        let b = b.unwrap();
-        let c = b as char;
+    'tick: while level < 3 {
+        let mut game = game::Game::create_map_player(level);
+        game.print();
+        // Using termion raw mode
+        let _stdout = stdout().into_raw_mode().unwrap();
 
-        // if the char is unprintable
-        if c.is_control() {
-            println!("Unreadable Input! Please try again.");
-        } else {
-            game.player_movement(c);
-						game.turn_actions();
-            game.item_interaction();
-            game.print();
+        for b in io::stdin().bytes() {
+            let b = b.unwrap();
+            let c = b as char;
 
-            if c == 'q' || game.game_status() != 0 {
-                break;
+            // if the char is unprintable
+            if c.is_control() {
+                println!("Unreadable Input! Please try again.");
+            } else {
+                game.player_movement(c);
+                game.turn_actions();
+                game.item_interaction();
+                game.print();
+
+                if c == 'q' {
+                    break 'tick;
+                }
+                if game.game_status() != 0 {
+                    break;
+                }
             }
         }
+        level += 1;
+        // Read in user input without pressing enter each time
+        game.print();
+        println!("Time {} sec", now.elapsed().as_secs());
     }
-    // Read in user input without pressing enter each time
-    game.print();
-    println!("Time {} sec", now.elapsed().as_secs());
 }

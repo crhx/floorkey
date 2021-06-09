@@ -6,10 +6,10 @@
 // Crate for printing color in terminal
 extern crate colored;
 
-use crate::game::Game;
 use crate::game::level::*;
 use crate::game::object::Object;
 use crate::game::object::Player;
+use crate::game::Game;
 use colored::*;
 
 // Map is made up of Tile x Tile
@@ -18,7 +18,7 @@ pub type Map = Vec<Vec<Tile>>;
 ///
 /// Map is created with Tile by Tile
 /// Each Tile has character to display, blocked, visited to display partial map
-/// 
+///
 #[derive(Clone, Debug)]
 pub struct Tile {
     pub print: char,
@@ -42,7 +42,7 @@ impl Tile {
     }
 }
 
-/// 
+///
 /// Build a terminal printable map from map vector and overlay objects from object vector.
 /// @map : map object
 /// @player : Player on the map
@@ -51,14 +51,14 @@ impl Tile {
 /// @message : game message to display on screen
 /// @game_status : status of the game (0 : continue, 1 : won, 2 : dead)
 /// @returns : vector of messages to display
-/// 
+///
 pub fn build_map(
     map: &[Vec<Tile>],
     player: &Player,
     objects: &mut Vec<Object>,
     inventory: &mut Object,
     message: &mut Vec<String>,
-    ) -> Vec<String> {
+) -> Vec<String> {
     // just build from map vector until object vector is finished
     //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
@@ -86,11 +86,11 @@ pub fn build_map(
         }
         colormap.push(cells);
     }
-    
+
     for amount_of in objects {
         colormap[amount_of.x as usize][amount_of.y as usize].print_colored =
             amount_of.print_colored.clone();
-    } 
+    }
 
     // todo: add color to objects
     // todo: accept objects vector
@@ -111,15 +111,15 @@ pub fn build_map(
     result.push(String::from("\n"));
     result.push(String::from("----------- Inventory -----------"));
     result.push(String::from(""));
-    
+
     // Add object to inventory if its holdable object
     if inventory.holdable {
         result.push(inventory.descr.clone());
     }
     // Add player score to result vec
-    result.push("Your Score :".to_owned()+ &player.score.to_string());
+    result.push("Your Score :".to_owned() + &player.score.to_string());
     result.push(String::from(""));
-    
+
     // Add game's messages at the very end
     result.push(String::from("----------- Game Message -----------"));
     result.append(&mut message.clone());
@@ -127,11 +127,11 @@ pub fn build_map(
     result
 }
 
-/// 
+///
 /// Function that takes in file name and create map from read in text file
 /// @level_number : player level number in game
 /// @Returns : the created map
-/// 
+///
 pub fn read_in_map(level_number: usize) -> Map {
     let mut map = vec![vec![Tile::empty(); 0_usize]; 0_usize];
 
@@ -184,22 +184,22 @@ pub fn read_in_map(level_number: usize) -> Map {
 /// Function get the number of rows and number of columns of the map
 /// @map : map object
 /// @returns : tuple of (no_of_row, no_of_column)
-/// 
+///
 pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }
 
 ///
 /// Function to find if the player collides with a wall
-/// @map : game map for finding walls 
+/// @map : game map for finding walls
 /// @cur_pos_x : current position of player wrt x co-ordinate
 /// @cur_pos_y : current position of player wrt y co-ordinate
 /// @returns : true if player collieds with wall otherwise returns false
-/// 
+///
 pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
-		let map = &game.map;
-		let objects = &game.objects;
-		let inventory = &game.inventory;
+    let map = &game.map;
+    let objects = &game.objects;
+    let inventory = &game.inventory;
     let (row, col) = get_row_col(map);
 
     //if cur_pos_x < 0 || cur_pos_x >= row as usize || cur_pos_y < 0 || cur_pos_y >= col as usize
@@ -207,25 +207,23 @@ pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
         return true;
     }
 
-		for (i, object) in objects.iter().enumerate() {
-					if cur_pos_x == object.x && cur_pos_y == object.y {
-						match object.id {
-							1 | 2 => { 
-											if inventory.id != 3 {
-												return true;
-											}
-								}
-								80 => {
-											if inventory.id != 13 && inventory.id != 3 {
-												return true;
-											}
-								}
-								_ => {
-							}
-
-					}
-			}
-			}
+    for (_i, object) in objects.iter().enumerate() {
+        if cur_pos_x == object.x && cur_pos_y == object.y {
+            match object.id {
+                1 | 2 => {
+                    if inventory.id != 3 {
+                        return true;
+                    }
+                }
+                80 => {
+                    if inventory.id != 13 && inventory.id != 3 {
+                        return true;
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
     // return true if wall
     map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }

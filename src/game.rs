@@ -220,7 +220,6 @@ impl Game {
         }
     }
 
-
     pub fn turn_actions(&mut self) {
         let objects_iter = &self.objects.clone();
         for (i, object) in objects_iter.iter().enumerate() {
@@ -242,7 +241,6 @@ impl Game {
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -284,7 +282,7 @@ mod tests {
     }
 
     #[test]
-    fn item_pickup_dropoff(){
+    fn item_pickup_dropoff() {
         // Read test map
         // "┌───┐",
         // "│*Γ.│",

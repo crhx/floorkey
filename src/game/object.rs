@@ -202,10 +202,10 @@ mod tests {
         assert_eq!((player.x, player.y), (0, 2));
 
         // Repositioning
-        player.reposition_item(2,2);
+        player.reposition_item(2, 2);
         assert_eq!((player.x, player.y), (2, 2));
 
-        player.reposition_item(1,0);
+        player.reposition_item(1, 0);
         assert_eq!((player.x, player.y), (1, 0));
 
         player.reposition_item(0, 0);

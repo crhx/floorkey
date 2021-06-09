@@ -645,28 +645,10 @@ pub fn level(level_number: usize) -> Level<'static> {
             level_name: "Test Level",
             player_start_x: 1,
             player_start_y: 1,
-            map_chars: [
-                "┌───┐",
-                "│...│",
-                "│...│",
-                "└───┘",
-            ]
-            .to_vec(),
-            map_colors: [
-                "rrrrr",
-                "r   r",
-                "r   r",
-                "rrrrr",
-            ]
-            .to_vec(),
+            map_chars: ["┌───┐", "│...│", "│...│", "└───┘"].to_vec(),
+            map_colors: ["rrrrr", "r   r", "r   r", "rrrrr"].to_vec(),
             map_color_key: [('r', "red"), ('b', "blue"), (' ', "green")].to_vec(),
-            map_bools: [
-                "33333",
-                "32223",
-                "32223",
-                "33333",
-            ]
-            .to_vec(),
+            map_bools: ["33333", "32223", "32223", "33333"].to_vec(),
             objects: [
                 Object {
                     x: 2,

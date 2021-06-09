@@ -19,7 +19,7 @@ fn main() {
             game.player = old_player;
             game.inventory = old_inventory;
         }
-        
+
         game.print();
         // Using termion raw mode
         let _stdout = stdout().into_raw_mode().unwrap();

@@ -14,7 +14,7 @@ pub type Player = Object;
 /// Object struct that carries x,y coordinates
 /// Has its own print character and specs that could be interacted
 ///
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Object {
     pub x: usize,
     pub y: usize,
@@ -143,7 +143,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn object_movement_repos() {
+    fn object_movement() {
         let height = 3;
         let width = 3;
 
@@ -201,6 +201,28 @@ mod tests {
         // current position check
         assert_eq!((player.x, player.y), (0, 2));
 
+    }
+
+    #[test]
+    fn object_reposition() {
+
+        let mut player = Object {
+            x: 1,
+            y: 1,
+            print: '@',
+            attri: 0,
+            mat: 0,
+            status: 0,
+            quantity: 0,
+            descr: "Player".to_string(),
+            holdable: false,
+            color: "green".to_string(),
+            print_colored: '@'.to_string().color("green"),
+            paired_item: "".to_string(),
+            score: 0,
+            id: 20,
+        };
+
         // Repositioning
         player.reposition_item(2, 2);
         assert_eq!((player.x, player.y), (2, 2));
@@ -214,4 +236,6 @@ mod tests {
         player.reposition_item(1, 1);
         assert_eq!((player.x, player.y), (1, 1));
     }
+
+
 }

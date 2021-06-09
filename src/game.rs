@@ -324,4 +324,176 @@ mod tests {
         // Dropped onto where player is currently
         assert_eq!((game.objects[1].x, game.objects[1].y), (1, 1));
     }
+
+    #[test]
+    fn test_message_when_player_collide_with_wall()
+    {   
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+        // Moved up picked up Pickaxe
+        game.player_movement('w');
+        game.item_interaction();
+
+        assert_eq!(game.inventory.descr, "Pickaxe");
+
+        //Moved right towards wall
+        game.player_movement('d');
+        assert_eq!((game.player.x, game.player.y), (1, 3));
+
+        // Moved right towards wall
+        game.player_movement('d');
+        assert_eq!((game.player.x, game.player.y), (1, 3));
+
+        assert_eq!((game.message[1]), (String::from("=> You cannot move there"))); 
+
+    } 
+
+    #[test]
+    fn test_game_status_when_player_burn()
+    {
+        // Read test map
+        // "┌─────┐",
+        // "│*Γ...│",
+        // "│.@0..│",
+        // "└─────┘",
+        let mut game = Game::create_map_player(101);
+        // Moved up encountered fire
+        game.player_movement('d');
+        game.item_interaction();
+
+        assert_eq!((game.message[0]), (String::from("=> You just encountered a/an Fire")));
+        assert_eq!((game.message[1]), (String::from("=> To live longer encounter 'Water' next ")));
+
+        // Keep encountering fire for 3 times without finding water
+        game.player_movement('a');
+        game.player_movement('d');
+        game.item_interaction();
+        game.player_movement('a');
+        game.player_movement('d');
+        game.item_interaction();
+        game.player_movement('a');
+        game.player_movement('d');
+        game.item_interaction();
+
+        // Moved right towards wall
+        game.player_movement('d');
+        assert_eq!((game.player.id), (0));
+
+        let status = game.game_status();
+        assert_eq!((status), (2));
+        assert_eq!((game.message[4]), (String::from("=> You burned to a crisp! RIP!")));
+
+    }
+    
+    #[test]
+    fn test_game_status_when_player_continues()
+    {
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+        // Moved up encountered boulder
+        game.player_movement('d');
+        game.item_interaction();
+
+        assert_eq!((game.message[0]), (String::from("=> You cannot move there")));
+      
+        let actual_status = game.game_status();
+        let expected_status = 0;
+        assert_eq!((actual_status), (expected_status)); 
+
+    } 
+
+    #[test]
+    fn test_player_cannot_move_to_boulder()
+    {
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+        // Moved up encountered boulder
+        game.player_movement('d');
+        game.item_interaction();
+
+        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
+
+    } 
+
+    #[test]
+    fn test_player_can_break_boulder_with_pickasa()
+    {
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+        // Moved up encountered boulder
+        game.player_movement('w');
+        game.item_interaction();
+
+        assert_eq!(game.inventory.descr, "Pickaxe");
+
+        game.player_movement('d');
+        game.player_movement('s');
+        game.item_interaction();
+
+        assert_eq!((game.message[0]), (String::from("=> You just picked up a/an Pickaxe"))); 
+        assert_eq!((game.message[1]), (String::from("=> You just encountered a/an A completely average boulder."))); 
+
+    }
+
+    #[test]
+    fn test_player_cannot_open_dore()
+    {
+        // Read test map
+        // "┌─────┐",
+        // "│*Γ...│",
+        // "│█@Ж..│",
+        // "└─────┘",
+        let mut game = Game::create_map_player(101);
+
+        // Moved left to open dore without Pickaxe
+        game.player_movement('a');
+        game.item_interaction();
+
+        //cant open the dore
+        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
+    }
+
+    #[test]
+    fn test_player_opens_dore_with_pickaxe()
+    {
+        // Read test map
+        // "┌─────┐",
+        // "│*Γ...│",
+        // "│█@Ж..│",
+        // "└─────┘",
+        let mut game = Game::create_map_player(101);
+
+        // Moved left to open dore without Pickaxe
+        game.player_movement('a');
+        game.item_interaction();
+
+        //cant open the dore
+        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
+
+        game.player_movement('w');
+        game.item_interaction();
+        assert_eq!((game.message[1]), (String::from("=> You just picked up a/an Pickaxe"))); 
+
+        // Now player can open the dore since he has Pickaxe
+        game.player_movement('s');
+        game.player_movement('a');
+        game.item_interaction();
+        assert_eq!((game.message[3]), (String::from("=> You just picked up a/an Door")));
+    }
 }

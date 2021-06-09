@@ -200,12 +200,10 @@ mod tests {
 
         // current position check
         assert_eq!((player.x, player.y), (0, 2));
-
     }
 
     #[test]
     fn object_reposition() {
-
         let mut player = Object {
             x: 1,
             y: 1,
@@ -236,6 +234,4 @@ mod tests {
         player.reposition_item(1, 1);
         assert_eq!((player.x, player.y), (1, 1));
     }
-
-
 }

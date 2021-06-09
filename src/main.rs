@@ -57,8 +57,7 @@ fn main() {
                 game.print();
                 println!("Time {} sec", now.elapsed().as_secs());
             }
-        }
-        else {
+        } else {
             break;
         }
     }

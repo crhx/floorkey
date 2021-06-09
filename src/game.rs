@@ -82,7 +82,6 @@ impl Game {
     /// @return : None
     ///
     pub fn player_movement(&mut self, dir: char) {
-        //let (row, col) = map::get_row_col(&self.map);
         let (row, col) = (self.map.len(), self.map[0].len());
         let mut temp = self.player.clone();
 

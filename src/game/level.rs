@@ -137,6 +137,22 @@ pub fn level(level_number: usize) -> Level<'static> {
                     score : 0,
 										id : 99,
                 },
+								Object {
+                    x: 4,
+                    y: 19,
+                    print: '█',
+                    attri: 0,
+                    mat: 0,
+                    status: 0,
+                    quantity: 1,
+                    descr: "Door".to_string(),
+                    holdable: true,
+                    color: "magenta".to_string(),
+                    print_colored: '█'.to_string().color("magenta"),
+                    paired_item : "".to_string(),
+                    score : 0,
+										id : 80,
+                },
 
             ]
             .to_vec(),

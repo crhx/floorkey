@@ -6,6 +6,7 @@
 // Crate for printing color in terminal
 extern crate colored;
 
+use crate::game::Game;
 use crate::game::level::*;
 use crate::game::object::Object;
 use crate::game::object::Player;
@@ -131,7 +132,7 @@ pub fn build_map(
 /// @level_number : player level number in game
 /// @Returns : the created map
 /// 
-pub fn read_in_map(level_number: u32) -> Map {
+pub fn read_in_map(level_number: usize) -> Map {
     let mut map = vec![vec![Tile::empty(); 0_usize]; 0_usize];
 
     // Iterate through string and modify the all empty map
@@ -195,13 +196,36 @@ pub fn get_row_col(map: &Map) -> (u64, u64) {
 /// @cur_pos_y : current position of player wrt y co-ordinate
 /// @returns : true if player collieds with wall otherwise returns false
 /// 
-pub fn is_collision(map: &Map, cur_pos_x: u32, cur_pos_y: u32) -> bool {
+pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
+		let map = &game.map;
+		let objects = &game.objects;
+		let inventory = &game.inventory;
     let (row, col) = get_row_col(map);
 
-    //if cur_pos_x < 0 || cur_pos_x >= row as u32 || cur_pos_y < 0 || cur_pos_y >= col as u32
-    if cur_pos_x >= row as u32 || cur_pos_y >= col as u32 {
+    //if cur_pos_x < 0 || cur_pos_x >= row as usize || cur_pos_y < 0 || cur_pos_y >= col as usize
+    if cur_pos_x >= row as usize || cur_pos_y >= col as usize {
         return true;
     }
+
+		for (i, object) in objects.iter().enumerate() {
+					if cur_pos_x == object.x && cur_pos_y == object.y {
+						match object.id {
+							1 | 2 => { 
+											if inventory.id != 3 {
+												return true;
+											}
+								}
+								80 => {
+											if inventory.id != 13 && inventory.id != 3 {
+												return true;
+											}
+								}
+								_ => {
+							}
+
+					}
+			}
+			}
     // return true if wall
     map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }

@@ -104,7 +104,7 @@ impl Game {
             'w' => {
                 // move player up
                 temp.move_up();
-                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                let player_collision = map::is_collision(&self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -114,7 +114,7 @@ impl Game {
             's' => {
                 // move player down
                 temp.move_down(row);
-                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                let player_collision = map::is_collision(&self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -124,7 +124,7 @@ impl Game {
             'a' => {
                 // move player left
                 temp.move_left();
-                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                let player_collision = map::is_collision(&self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -134,7 +134,7 @@ impl Game {
             'd' => {
                 // move player right
                 temp.move_right(col);
-                let player_collision = map::is_collision(&self.map, temp.x, temp.y);
+                let player_collision = map::is_collision(&self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -253,6 +253,11 @@ impl Game {
 												&self.objects.swap_remove(i);
 											}
 								}
+							80 => { 
+											if self.inventory.id == 3 {
+												&self.objects.swap_remove(i);
+											}
+										}
 								_ => {
 							}
 

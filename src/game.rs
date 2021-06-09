@@ -12,14 +12,14 @@ use crate::game::object::Object;
 ///
 #[derive(Clone, Debug)]
 pub struct Game {
-    map: map::Map,
-    player: object::Player,
-    objects: object::Objects,
-    inventory: object::Object,
+    pub map: map::Map,
+    pub player: object::Player,
+    pub objects: object::Objects,
+    pub inventory: object::Object,
     // Game message storing
-    message: Vec<String>,
+    pub message: Vec<String>,
     // Game status 0 for continue, 1 for won, 2 for dead
-    status: u8,
+    pub status: usize,
 }
 
 ///
@@ -82,7 +82,8 @@ impl Game {
     /// @return : None
     ///
     pub fn player_movement(&mut self, dir: char) {
-        let (row, col) = map::get_row_col(&self.map);
+        //let (row, col) = map::get_row_col(&self.map);
+        let (row, col) = (self.map.len(), self.map[0].len());
         let mut temp = self.player.clone();
 
         match dir {
@@ -192,7 +193,7 @@ impl Game {
                         self.add_msg(String::from("\n\nYOU WON!!!"));
                     } else if item.descr == "Fire" {
                         self.add_msg("=> To live longer encounter 'Water' next ".to_string());
-                        self.player.id = self.player.id / 2;
+                        self.player.id /= 2
                     } else if item.descr == "Water" {
                         if self.player.id < 20 {
                             self.add_msg("=> You got saved, continue playing...".to_string());
@@ -210,10 +211,10 @@ impl Game {
     /// @self : Game status
     /// @returns : status numbers (0/1/2)
     ///
-    pub fn game_status(&mut self) -> u8 {
+    pub fn game_status(&mut self) -> usize {
         if self.player.id == 0 {
             self.add_msg("=> You burned to a crisp! RIP!".to_string());
-            return 2_u8;
+            2
         } else {
             self.status
         }

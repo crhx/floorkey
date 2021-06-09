@@ -87,7 +87,7 @@ impl Object {
     ///
     /// Function to moving down (x + 1) in the map
     ///
-    pub fn move_down(&mut self, height: u64) {
+    pub fn move_down(&mut self, height: usize) {
         if self.x + 1 >= height as usize {
             println!("Out of bound!");
         } else {
@@ -109,7 +109,7 @@ impl Object {
     ///
     /// Function to moving right (y + 1) in the map
     ///
-    pub fn move_right(&mut self, width: u64) {
+    pub fn move_right(&mut self, width: usize) {
         if self.y + 1 >= width as usize {
             println!("Out of bound!");
         } else {

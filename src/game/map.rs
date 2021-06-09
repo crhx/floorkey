@@ -185,9 +185,11 @@ pub fn read_in_map(level_number: usize) -> Map {
 /// @map : map object
 /// @returns : tuple of (no_of_row, no_of_column)
 ///
+/*
 pub fn get_row_col(map: &Map) -> (u64, u64) {
     (map.len() as u64, map[0].len() as u64)
 }
+*/
 
 ///
 /// Function to find if the player collides with a wall
@@ -200,8 +202,8 @@ pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
     let map = &game.map;
     let objects = &game.objects;
     let inventory = &game.inventory;
-    let (row, col) = get_row_col(map);
-
+    //let (row, col) = get_row_col(map);
+    let (row, col) = (map.len(), map[0].len());
     //if cur_pos_x < 0 || cur_pos_x >= row as usize || cur_pos_y < 0 || cur_pos_y >= col as usize
     if cur_pos_x >= row as usize || cur_pos_y >= col as usize {
         return true;

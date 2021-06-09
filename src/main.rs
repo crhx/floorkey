@@ -7,9 +7,19 @@ use termion::raw::IntoRawMode;
 fn main() {
     let now = Instant::now();
     let mut level = 1;
+    let mut game = game::Game::create_map_player(level);
 
     'tick: while level < 3 {
-        let mut game = game::Game::create_map_player(level);
+        if level > 1 {
+            let mut old_player = game.player.clone();
+            let old_inventory = game.inventory.clone();
+            game = game::Game::create_map_player(level);
+            old_player.x = game.player.x;
+            old_player.y = game.player.y;
+            game.player = old_player;
+            game.inventory = old_inventory;
+        }
+        
         game.print();
         // Using termion raw mode
         let _stdout = stdout().into_raw_mode().unwrap();

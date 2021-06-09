@@ -101,7 +101,7 @@ To run tests, run the following command
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/crhx/floorkey/blob/main/LICENSE)
 
 crhx/floorkey is licensed under the MIT License
 

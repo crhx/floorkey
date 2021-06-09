@@ -65,8 +65,19 @@ fn main() {
 }
 
 pub fn opening() {
+    println!("
+    \r\n  ▄████████  ▄█        ▄██████▄   ▄██████▄     ▄████████    ▄█   ▄█▄    ▄████████  ▄██   ▄   
+    \r\n  ███    ███ ███       ███    ███ ███    ███   ███    ███   ███ ▄███▀   ███    ███ ███   ██▄ 
+    \r\n  ███    █▀  ███       ███    ███ ███    ███   ███    ███   ███▐██▀     ███    █▀  ███▄▄▄███ 
+    \r\n ▄███▄▄▄     ███       ███    ███ ███    ███  ▄███▄▄▄▄██▀  ▄█████▀     ▄███▄▄▄     ▀▀▀▀▀▀███ 
+    \r\n▀▀███▀▀▀     ███       ███    ███ ███    ███ ▀▀███▀▀▀▀▀   ▀▀█████▄    ▀▀███▀▀▀     ▄██   ███ 
+    \r\n  ███        ███       ███    ███ ███    ███ ▀███████████   ███▐██▄     ███    █▄  ███   ███ 
+    \r\n  ███        ███▌    ▄ ███    ███ ███    ███   ███    ███   ███ ▀███▄   ███    ███ ███   ███ 
+    \r\n  ███        █████▄▄██  ▀██████▀   ▀██████▀    ███    ███   ███   ▀█▀   ██████████  ▀█████▀  
+    \r\n             ▀                                 ███    ███   ▀                                                             
+   ");
     println!(
-        "\r\nWelcome to Floorkey!!!\r\nGet key open door or burn alive\r\nLittle tip before we start\r\n"
+        "\r\nWelcome to Floorkey!!!\r\nGet key open door or burn alive\r\n\nLittle tip before we start\r\n"
     );
     println!("w => Move Up\r\ns => Move Down\r\na => Move Left\r\nd => Move Right\r\nq => GET ME THE HELL OUT BUTTON\r\n");
     println!("When you're ready press any key\r\nIf you're too scared then press q\r\n");

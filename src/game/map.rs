@@ -229,3 +229,31 @@ pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
     // return true if wall
     map[cur_pos_x as usize][cur_pos_y as usize].blocked
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn read_map_collision() {
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let game = Game::create_map_player(100);
+
+        // Wall
+        assert_eq!(is_collision(&game, 0, 1), true);
+        // Nothing
+        assert_eq!(is_collision(&game, 1, 1), false);
+        // Wall
+        assert_eq!(is_collision(&game, 1, 4), true);
+        // Wall
+        assert_eq!(is_collision(&game, 3, 1), true);
+        // Boulder exists there
+        assert_eq!(is_collision(&game, 2, 3), true);
+        // Pickaxew
+        assert_eq!(is_collision(&game, 1, 2), false);
+    }
+}

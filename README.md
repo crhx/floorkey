@@ -12,7 +12,7 @@ Floorkey is a roguelike game that lets players go through levels of dungeon by c
 Players can move through the dungeon to interact with items on the floor or obstacles that might block your path to victory!
  
 Dungeon contains items that might help the player through their journey or it could potentially be the player's excruciating end.
-Pick up a pickaxe to break the boulder and more! Pick up water to give yourself a cooling salvation from the fire that burns off your skin! Or just watch the exit from the other side of the obstacle. 
+Pick up a pickaxe abd break through boulder! Pick up water to give yourself a cooling salvation from the fire that burns off your skin! Or just watch the exit from the other side of an obstacle. 
 
 Figure out what works and what doesn't through pain!
 

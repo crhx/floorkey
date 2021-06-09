@@ -457,7 +457,6 @@ mod tests {
         let actual_status = game.game_status();
         let expected_status = 0;
         assert_eq!((actual_status), (expected_status));
->>>>>>> f8b045780e4aee315c44ef208e94ac2d9f7b55a4
     }
 
     #[test]
@@ -821,6 +820,5 @@ mod tests {
         game.player_movement('q');
 
         assert_eq!((game.message[2]), (String::from("Player quit the game")));
->>>>>>> f8b045780e4aee315c44ef208e94ac2d9f7b55a4
     }
 }

@@ -90,7 +90,7 @@ impl Game {
             'w' => {
                 // move player up
                 temp.move_up();
-                let player_collision = map::is_collision(&self, temp.x, temp.y);
+                let player_collision = map::is_collision(self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -100,7 +100,7 @@ impl Game {
             's' => {
                 // move player down
                 temp.move_down(row);
-                let player_collision = map::is_collision(&self, temp.x, temp.y);
+                let player_collision = map::is_collision(self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -110,7 +110,7 @@ impl Game {
             'a' => {
                 // move player left
                 temp.move_left();
-                let player_collision = map::is_collision(&self, temp.x, temp.y);
+                let player_collision = map::is_collision(self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -120,7 +120,7 @@ impl Game {
             'd' => {
                 // move player right
                 temp.move_right(col);
-                let player_collision = map::is_collision(&self, temp.x, temp.y);
+                let player_collision = map::is_collision(self, temp.x, temp.y);
                 if !player_collision {
                     self.player = temp;
                 } else {
@@ -235,6 +235,22 @@ impl Game {
                             self.objects.swap_remove(i);
                         }
                     }
+                    85 => {
+                        if self.inventory.id == 86 {
+                            self.add_msg("Old man: *gluf gluf*".to_string());
+                            self.add_msg("Old man: \"I guess I'll come with you.".to_string());
+                            self.inventory = Object::empty();
+                        }
+                    }
+                    87 => {
+                        if self.inventory.id == 85 {
+                            self.add_msg("Old man: \"Aaaaaaahhhhh.\"".to_string());
+                            self.add_msg("Old man: *thud*".to_string());
+                            self.add_msg("=> The terrain has been smoothend".to_string());
+                            self.objects.swap_remove(i);
+                        }
+                    }
+
                     _ => {}
                 }
             }
@@ -326,8 +342,7 @@ mod tests {
     }
 
     #[test]
-    fn test_message_when_player_collide_with_wall()
-    {   
+    fn test_message_when_player_collide_with_wall() {
         // Read test map
         // "┌───┐",
         // "│*Γ.│",
@@ -348,13 +363,14 @@ mod tests {
         game.player_movement('d');
         assert_eq!((game.player.x, game.player.y), (1, 3));
 
-        assert_eq!((game.message[1]), (String::from("=> You cannot move there"))); 
-
-    } 
+        assert_eq!(
+            (game.message[1]),
+            (String::from("=> You cannot move there"))
+        );
+    }
 
     #[test]
-    fn test_game_status_when_player_burn()
-    {
+    fn test_game_status_when_player_burn() {
         // Read test map
         // "┌─────┐",
         // "│*Γ...│",
@@ -365,8 +381,14 @@ mod tests {
         game.player_movement('d');
         game.item_interaction();
 
-        assert_eq!((game.message[0]), (String::from("=> You just encountered a/an Fire")));
-        assert_eq!((game.message[1]), (String::from("=> To live longer encounter 'Water' next ")));
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You just encountered a/an Fire"))
+        );
+        assert_eq!(
+            (game.message[1]),
+            (String::from("=> To live longer encounter 'Water' next "))
+        );
 
         // Keep encountering fire for 3 times without finding water
         game.player_movement('a');
@@ -385,13 +407,14 @@ mod tests {
 
         let status = game.game_status();
         assert_eq!((status), (2));
-        assert_eq!((game.message[4]), (String::from("=> You burned to a crisp! RIP!")));
-
+        assert_eq!(
+            (game.message[4]),
+            (String::from("=> You burned to a crisp! RIP!"))
+        );
     }
-    
+
     #[test]
-    fn test_game_status_when_player_continues()
-    {
+    fn test_game_status_when_player_continues() {
         // Read test map
         // "┌───┐",
         // "│*Γ.│",
@@ -402,17 +425,18 @@ mod tests {
         game.player_movement('d');
         game.item_interaction();
 
-        assert_eq!((game.message[0]), (String::from("=> You cannot move there")));
-      
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You cannot move there"))
+        );
+
         let actual_status = game.game_status();
         let expected_status = 0;
-        assert_eq!((actual_status), (expected_status)); 
-
-    } 
+        assert_eq!((actual_status), (expected_status));
+    }
 
     #[test]
-    fn test_player_cannot_move_to_boulder()
-    {
+    fn test_player_cannot_move_to_boulder() {
         // Read test map
         // "┌───┐",
         // "│*Γ.│",
@@ -423,13 +447,14 @@ mod tests {
         game.player_movement('d');
         game.item_interaction();
 
-        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
-
-    } 
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You cannot move there"))
+        );
+    }
 
     #[test]
-    fn test_player_can_break_boulder_with_pickasa()
-    {
+    fn test_player_can_break_boulder_with_pickasa() {
         // Read test map
         // "┌───┐",
         // "│*Γ.│",
@@ -446,14 +471,18 @@ mod tests {
         game.player_movement('s');
         game.item_interaction();
 
-        assert_eq!((game.message[0]), (String::from("=> You just picked up a/an Pickaxe"))); 
-        assert_eq!((game.message[1]), (String::from("=> You just encountered a/an A completely average boulder."))); 
-
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You just picked up a/an Pickaxe"))
+        );
+        assert_eq!(
+            (game.message[1]),
+            (String::from("=> You just encountered a/an A completely average boulder."))
+        );
     }
 
     #[test]
-    fn test_player_cannot_open_dore()
-    {
+    fn test_player_cannot_open_dore() {
         // Read test map
         // "┌─────┐",
         // "│*Γ...│",
@@ -466,12 +495,14 @@ mod tests {
         game.item_interaction();
 
         //cant open the dore
-        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You cannot move there"))
+        );
     }
 
     #[test]
-    fn test_player_opens_dore_with_pickaxe()
-    {
+    fn test_player_opens_dore_with_pickaxe() {
         // Read test map
         // "┌─────┐",
         // "│*Γ...│",
@@ -484,16 +515,25 @@ mod tests {
         game.item_interaction();
 
         //cant open the dore
-        assert_eq!((game.message[0]), (String::from("=> You cannot move there"))); 
+        assert_eq!(
+            (game.message[0]),
+            (String::from("=> You cannot move there"))
+        );
 
         game.player_movement('w');
         game.item_interaction();
-        assert_eq!((game.message[1]), (String::from("=> You just picked up a/an Pickaxe"))); 
+        assert_eq!(
+            (game.message[1]),
+            (String::from("=> You just picked up a/an Pickaxe"))
+        );
 
         // Now player can open the dore since he has Pickaxe
         game.player_movement('s');
         game.player_movement('a');
         game.item_interaction();
-        assert_eq!((game.message[3]), (String::from("=> You just picked up a/an Door")));
+        assert_eq!(
+            (game.message[3]),
+            (String::from("=> You just picked up a/an Door"))
+        );
     }
 }

@@ -17,7 +17,7 @@ fn main() {
         let start = s as char;
 
         if start != 'q' {
-            while level < 3 {
+            while level < 4 {
                 if level > 1 {
                     let mut old_player = game.player.clone();
                     let old_inventory = game.inventory.clone();
@@ -57,8 +57,7 @@ fn main() {
                 game.print();
                 println!("Time {} sec", now.elapsed().as_secs());
             }
-        }
-        else {
+        } else {
             break;
         }
     }

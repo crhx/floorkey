@@ -198,7 +198,7 @@ pub fn get_row_col(map: &Map) -> (u64, u64) {
 /// @cur_pos_y : current position of player wrt y co-ordinate
 /// @returns : true if player collieds with wall otherwise returns false
 ///
-pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
+pub fn is_collision(game: &mut Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
     let map = &game.map;
     let objects = &game.objects;
     let inventory = &game.inventory;
@@ -222,6 +222,26 @@ pub fn is_collision(game: &Game, cur_pos_x: usize, cur_pos_y: usize) -> bool {
                         return true;
                     }
                 }
+                81 => {
+                    if inventory.id != 13 {
+                        game.add_msg("=> You've encountered an iron door".to_string());
+                        return true;
+                    }
+                }
+                85 => {
+                    if inventory.id != 86 {
+                        game.add_msg("=> You've encountered an Old man".to_string());
+                        game.add_msg("=> Old man: \"I don't have a clue.\"".to_string());
+                        return true;
+                    }
+                }
+                87 => {
+                    if inventory.id != 85 {
+                        game.add_msg("=> You've encountered a pit".to_string());
+                        return true;
+                    }
+                }
+
                 _ => {}
             }
         }

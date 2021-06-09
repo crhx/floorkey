@@ -20,8 +20,8 @@ fn main() {
             println!("Unreadable Input! Please try again.");
         } else {
             game.player_movement(c);
-            game.item_interaction();
 						game.turn_actions();
+            game.item_interaction();
             game.print();
 
             if c == 'q' || game.game_status() != 0 {

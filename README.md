@@ -99,6 +99,13 @@ To run tests, run the following command
 - [@crhx](https://github.com/crhx) => tevren@pdx.edu
 - [@Leonlee190](https://github.com/Leonlee190) => seung2@pdx.edu
 
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+crhx/floorkey is licensed under the MIT License
+
+A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
   
 ## Contributing
 

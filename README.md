@@ -15,6 +15,7 @@ Dungeon contains items that might help the player through their journey or it co
 Pick up a pickaxe to break the boulder and more! Pick up water to give yourself a cooling salvation from the fire that burns off your skin! Or just watch the exit from the other side of the obstacle. 
 
 Figure out what works and what doesn't through pain!
+
 Try to exit each level of dungeon with the fastest time and win the whole game!
 ## Installation 
 

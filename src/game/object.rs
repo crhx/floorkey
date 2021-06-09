@@ -137,3 +137,81 @@ impl Object {
 pub fn read_in_obj(level_number: usize) -> Objects {
     level(level_number).objects
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn object_movement_repos() {
+        let height = 3;
+        let width = 3;
+
+        let mut player = Object {
+            x: 1,
+            y: 1,
+            print: '@',
+            attri: 0,
+            mat: 0,
+            status: 0,
+            quantity: 0,
+            descr: "Player".to_string(),
+            holdable: false,
+            color: "green".to_string(),
+            print_colored: '@'.to_string().color("green"),
+            paired_item: "".to_string(),
+            score: 0,
+            id: 20,
+        };
+
+        player.move_down(height);
+        assert_eq!((player.x, player.y), (2, 1));
+
+        // moving down beyond height parameter shouldn't change the coordinates
+        player.move_down(height);
+        assert_eq!((player.x, player.y), (2, 1));
+
+        player.move_up();
+        assert_eq!((player.x, player.y), (1, 1));
+
+        player.move_up();
+        assert_eq!((player.x, player.y), (0, 1));
+
+        // moving up beyond 0 shouldn't change the coordinates
+        player.move_up();
+        assert_eq!((player.x, player.y), (0, 1));
+
+        player.move_left();
+        assert_eq!((player.x, player.y), (0, 0));
+
+        // moving left beyond 0 shouldn't change the coordinates
+        player.move_left();
+        assert_eq!((player.x, player.y), (0, 0));
+
+        player.move_right(width);
+        assert_eq!((player.x, player.y), (0, 1));
+
+        player.move_right(width);
+        assert_eq!((player.x, player.y), (0, 2));
+
+        // moving right beyond width parameter shouldn't change the coordinates
+        player.move_right(width);
+        assert_eq!((player.x, player.y), (0, 2));
+
+        // current position check
+        assert_eq!((player.x, player.y), (0, 2));
+
+        // Repositioning
+        player.reposition_item(2,2);
+        assert_eq!((player.x, player.y), (2, 2));
+
+        player.reposition_item(1,0);
+        assert_eq!((player.x, player.y), (1, 0));
+
+        player.reposition_item(0, 0);
+        assert_eq!((player.x, player.y), (0, 0));
+
+        player.reposition_item(1, 1);
+        assert_eq!((player.x, player.y), (1, 1));
+    }
+}

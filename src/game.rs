@@ -219,6 +219,8 @@ impl Game {
             self.status
         }
     }
+
+
     pub fn turn_actions(&mut self) {
         let objects_iter = &self.objects.clone();
         for (i, object) in objects_iter.iter().enumerate() {
@@ -238,5 +240,90 @@ impl Game {
                 }
             }
         }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn game_player_move() {
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+
+        // Moving into boulder so shouldn't change coords
+        game.player_movement('d');
+        assert_eq!((game.player.x, game.player.y), (2, 2));
+
+        game.player_movement('w');
+        assert_eq!((game.player.x, game.player.y), (1, 2));
+
+        // Moving into top wall so shouldn't change coords
+        game.player_movement('w');
+        assert_eq!((game.player.x, game.player.y), (1, 2));
+
+        game.player_movement('a');
+        assert_eq!((game.player.x, game.player.y), (1, 1));
+
+        // Moving into left wall so shouldn't change coord
+        game.player_movement('a');
+        assert_eq!((game.player.x, game.player.y), (1, 1));
+
+        game.player_movement('s');
+        assert_eq!((game.player.x, game.player.y), (2, 1));
+
+        // Moving into bottom wall so shouldn't change coords
+        game.player_movement('s');
+        assert_eq!((game.player.x, game.player.y), (2, 1));
+    }
+
+    #[test]
+    fn item_pickup_dropoff(){
+        // Read test map
+        // "┌───┐",
+        // "│*Γ.│",
+        // "│.@0│",
+        // "└───┘",
+        let mut game = Game::create_map_player(100);
+
+        // Moved up picked up Pickaxe
+        game.player_movement('w');
+        game.item_interaction();
+
+        assert_eq!(game.inventory.descr, "Pickaxe");
+
+        // Moved left picked up Potion and dropped Pickaxe to map
+        game.player_movement('a');
+        game.item_interaction();
+
+        assert_eq!((game.player.x, game.player.y), (1, 1));
+        assert_eq!(game.inventory.descr, "Potion");
+
+        assert_eq!(game.objects[0].descr, "A completely average boulder.");
+        assert_eq!(game.objects[1].descr, "Pickaxe");
+
+        // Dropped onto where player is currently
+        assert_eq!((game.objects[1].x, game.objects[1].y), (1, 1));
+
+        // Moved up and down again and return to (1,1) to pick up Pickaxe and drop Potion
+        game.player_movement('s');
+        game.item_interaction();
+        game.player_movement('w');
+        game.item_interaction();
+
+        assert_eq!((game.player.x, game.player.y), (1, 1));
+        assert_eq!(game.inventory.descr, "Pickaxe");
+
+        assert_eq!(game.objects[0].descr, "A completely average boulder.");
+        assert_eq!(game.objects[1].descr, "Potion");
+
+        // Dropped onto where player is currently
+        assert_eq!((game.objects[1].x, game.objects[1].y), (1, 1));
     }
 }

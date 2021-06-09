@@ -640,6 +640,85 @@ pub fn level(level_number: usize) -> Level<'static> {
             ]
             .to_vec(),
         },
+        // Test purpose
+        100 => Level {
+            level_name: "Test Level",
+            player_start_x: 1,
+            player_start_y: 1,
+            map_chars: [
+                "┌───┐",
+                "│...│",
+                "│...│",
+                "└───┘",
+            ]
+            .to_vec(),
+            map_colors: [
+                "rrrrr",
+                "r   r",
+                "r   r",
+                "rrrrr",
+            ]
+            .to_vec(),
+            map_color_key: [('r', "red"), ('b', "blue"), (' ', "green")].to_vec(),
+            map_bools: [
+                "33333",
+                "32223",
+                "32223",
+                "33333",
+            ]
+            .to_vec(),
+            objects: [
+                Object {
+                    x: 2,
+                    y: 3,
+                    print: '0',
+                    attri: 0,
+                    mat: 0,
+                    status: 0,
+                    quantity: 1,
+                    descr: "A completely average boulder.".to_string(),
+                    holdable: false,
+                    color: "white".to_string(),
+                    print_colored: '0'.to_string().color("white"),
+                    paired_item: "".to_string(),
+                    score: 0,
+                    id: 1,
+                },
+                Object {
+                    x: 1,
+                    y: 2,
+                    print: 'Γ',
+                    attri: 0,
+                    mat: 0,
+                    status: 0,
+                    quantity: 1,
+                    descr: "Pickaxe".to_string(),
+                    holdable: true,
+                    color: "yellow".to_string(),
+                    print_colored: 'Γ'.to_string().color("yellow"),
+                    paired_item: "".to_string(),
+                    score: 20,
+                    id: 3,
+                },
+                Object {
+                    x: 1,
+                    y: 1,
+                    print: '*',
+                    attri: 0,
+                    mat: 0,
+                    status: 0,
+                    quantity: 1,
+                    descr: "Potion".to_string(),
+                    holdable: true,
+                    color: "yellow".to_string(),
+                    print_colored: '*'.to_string().color("yellow"),
+                    paired_item: "".to_string(),
+                    score: 20,
+                    id: 3,
+                },
+            ]
+            .to_vec(),
+        },
 
         _ => panic!("call to initialize undefined level number in init_level()"),
     }

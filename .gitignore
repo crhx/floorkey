@@ -1,6 +1,13 @@
-/target
-/target/*
+# ignore everything
+*
 
-*.swp
-.DS_Store
-
+# Except
+!.gitignore
+!src/main.rs
+!src/game.rs
+!src/game/object.rs
+!src/game/map.rs
+!src/game/level.rs
+!Cargo.lock
+!Cargo.toml
+!README.md

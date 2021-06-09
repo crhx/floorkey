@@ -59,8 +59,6 @@ pub fn build_map(
     inventory: &mut Object,
     message: &mut Vec<String>,
 ) -> Vec<String> {
-    // just build from map vector until object vector is finished
-    //pub fn build_map(map: &Vec<Vec<Tile>>) -> Vec<String> {
     #[derive(Clone, Debug)]
     struct ColoredCell {
         print_colored: ColoredString,
@@ -92,8 +90,6 @@ pub fn build_map(
             amount_of.print_colored.clone();
     }
 
-    // todo: add color to objects
-    // todo: accept objects vector
     colormap[player.x as usize][player.y as usize].print_colored =
         player.print.to_string().color("purple");
 
@@ -181,17 +177,6 @@ pub fn read_in_map(level_number: usize) -> Map {
 }
 
 ///
-/// Function get the number of rows and number of columns of the map
-/// @map : map object
-/// @returns : tuple of (no_of_row, no_of_column)
-///
-/*
-pub fn get_row_col(map: &Map) -> (u64, u64) {
-    (map.len() as u64, map[0].len() as u64)
-}
-*/
-
-///
 /// Function to find if the player collides with a wall
 /// @map : game map for finding walls
 /// @cur_pos_x : current position of player wrt x co-ordinate
@@ -202,9 +187,7 @@ pub fn is_collision(game: &mut Game, cur_pos_x: usize, cur_pos_y: usize) -> bool
     let map = &game.map;
     let objects = &game.objects;
     let inventory = &game.inventory;
-    //let (row, col) = get_row_col(map);
     let (row, col) = (map.len(), map[0].len());
-    //if cur_pos_x < 0 || cur_pos_x >= row as usize || cur_pos_y < 0 || cur_pos_y >= col as usize
     if cur_pos_x >= row as usize || cur_pos_y >= col as usize {
         return true;
     }

@@ -212,7 +212,12 @@ impl Game {
             self.status
         }
     }
-
+    ///
+    /// Checks object vector to do special actions like making items breakable
+    /// or if you want to customize any interaction
+    /// @self : Game status
+    /// @returns : status numbers (0/1/2)
+    ///
     pub fn turn_actions(&mut self) {
         let objects_iter = &self.objects.clone();
         for (i, object) in objects_iter.iter().enumerate() {

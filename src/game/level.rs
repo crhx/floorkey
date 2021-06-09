@@ -6,7 +6,6 @@ extern crate colored;
 
 use crate::game::object::Object;
 use colored::*;
-//use crate::game::monster::Monster;
 
 ///
 /// Game contains different levels and each level has it's own map, objects and exit points
@@ -18,10 +17,8 @@ pub struct Level<'a> {
     pub map_chars: Vec<&'a str>,
     pub map_colors: Vec<&'a str>,
     pub map_color_key: Vec<(char, &'a str)>,
-    // map_bools is adding bits: 1 = blocked, 2 = visited
     pub map_bools: Vec<&'a str>,
     pub objects: Vec<Object>,
-    //    pub monsters: Vec<Monster>,
 }
 
 ///
@@ -1206,7 +1203,7 @@ pub fn level(level_number: usize) -> Level<'static> {
             ]
             .to_vec(),
         },
-        // Test purpose
+        // Level used for test purpose
         100 => Level {
             level_name: "Test Level",
             player_start_x: 1,
@@ -1268,7 +1265,7 @@ pub fn level(level_number: usize) -> Level<'static> {
             .to_vec(),
         },
 
-        // Test purpose
+        // Level used for test purpose
         101 => Level {
             level_name: "Test Level",
             player_start_x: 1,

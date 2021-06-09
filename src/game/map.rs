@@ -244,19 +244,19 @@ mod tests {
         // "│*Γ.│",
         // "│.@0│",
         // "└───┘",
-        let game = Game::create_map_player(100);
+        let mut game = Game::create_map_player(100);
 
         // Wall
-        assert_eq!(is_collision(&game, 0, 1), true);
+        assert_eq!(is_collision(&mut game, 0, 1), true);
         // Nothing
-        assert_eq!(is_collision(&game, 1, 1), false);
+        assert_eq!(is_collision(&mut game, 1, 1), false);
         // Wall
-        assert_eq!(is_collision(&game, 1, 4), true);
+        assert_eq!(is_collision(&mut game, 1, 4), true);
         // Wall
-        assert_eq!(is_collision(&game, 3, 1), true);
+        assert_eq!(is_collision(&mut game, 3, 1), true);
         // Boulder exists there
-        assert_eq!(is_collision(&game, 2, 3), true);
+        assert_eq!(is_collision(&mut game, 2, 3), true);
         // Pickaxew
-        assert_eq!(is_collision(&game, 1, 2), false);
+        assert_eq!(is_collision(&mut game, 1, 2), false);
     }
 }
